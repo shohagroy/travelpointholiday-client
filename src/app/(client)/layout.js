@@ -1,3 +1,4 @@
+import Footer from "@/shared/Footer";
 import Header from "@/shared/header/Header";
 
 const ClientLayout = ({ children }) => {
@@ -5,10 +6,9 @@ const ClientLayout = ({ children }) => {
     <div>
       <Header />
 
-      {children}
-      <div className="max-w-7xl mx-auto">
-        <h1 className="bg-red-600">Footer</h1>
-      </div>
+      <div className="min-h-screen">{children}</div>
+
+      <Footer />
     </div>
   );
 };

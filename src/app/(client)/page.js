@@ -1,15 +1,31 @@
-import { Button } from "antd";
+import Banar from "@/components/Banar";
+import ExploreDestinations from "@/components/ExploreDestinations";
+import SearchAttractions from "@/components/SearchAttractions";
+import TopDestinations from "@/components/TopDestinations";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>Travel Point | Home</title>
+      </Head>
       <main>
-        <h1 className="">This is home page</h1>
-        <Button type="primary" danger>
-          hell
-        </Button>
+        {/* banar section  */}
+        <section>
+          <Banar />
+        </section>
 
-        <p className="bg-red-200 border-b border-black">kajsdhfkasflk</p>
+        {/* search section  */}
+        <section>
+          <SearchAttractions />
+          <TopDestinations />
+        </section>
+
+        {/* explore more*/}
+        <section>
+          <ExploreDestinations />
+        </section>
       </main>
     </>
   );
