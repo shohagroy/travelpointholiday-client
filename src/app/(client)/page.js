@@ -1,6 +1,7 @@
 import Banar from "@/components/Banar";
 import ExploreDestinations from "@/components/ExploreDestinations";
 import SearchAttractions from "@/components/SearchAttractions";
+import Subscribe from "@/components/Subscribe";
 import TopDestinations from "@/components/TopDestinations";
 import Head from "next/head";
 
@@ -21,6 +22,9 @@ export default function Home() {
           <SearchAttractions />
           <TopDestinations />
         </section>
+
+        {/* subscribe section  */}
+        <Subscribe />
 
         {/* explore more*/}
         <section>

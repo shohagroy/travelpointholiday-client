@@ -42,7 +42,7 @@ const ExploreDestinations = () => {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <Row gutter={20}>
-        <Col className="my-3" span={8}>
+        <Col className="my-3" span={24}>
           <Text text={"Explore more destinations"} />
           <p>Find things to do in cities around the world</p>
         </Col>
@@ -60,7 +60,7 @@ const ExploreDestinations = () => {
       <div>
         <Row gutter={20}>
           {[...Array(32)].map((item, i) => (
-            <Col className="my-3" key={i} span={6}>
+            <Col className="my-3" key={i} xs={24} sm={24} md={12} lg={6}>
               <div className="h-[200px] w-full relative">
                 <div className="h-full w-full  opacity-100 rounded-md overflow-hidden hover:opacity-80 transition-opacity">
                   <img

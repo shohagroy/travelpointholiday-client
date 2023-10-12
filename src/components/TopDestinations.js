@@ -35,7 +35,7 @@ const TopDestinations = () => {
 
       <Row className="" gutter={20}>
         {[...Array(6)].map((item, i) => (
-          <Col className="my-3" key={i} span={8}>
+          <Col className="my-3" key={i} xs={24} sm={12} md={8} lg={8}>
             <Card
               className="shadow-md"
               cover={
@@ -64,7 +64,7 @@ const TopDestinations = () => {
         <Text text={"We've got you covered"} />
         <Row gutter={20}>
           {items.map((item, i) => (
-            <Col className="my-3" key={i} span={8}>
+            <Col className="my-3" key={i} xs={24} sm={12} md={8} lg={8}>
               <Flex gap={10}>
                 <div className="text-2xl text-green-600">{item?.icon}</div>
                 <div>

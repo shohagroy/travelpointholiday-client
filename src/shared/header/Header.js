@@ -10,7 +10,7 @@ import Navigation from "./Navigation";
 
 const Header = () => {
   return (
-    <div className="bg-red-200 border-b-2 border-black">
+    <div className="bg-[#013A95] border-b-2 text-white">
       <div className="max-w-7xl mx-auto ">
         <Flex
           style={{ width: "100%", padding: "20px" }}

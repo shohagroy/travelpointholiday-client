@@ -27,8 +27,8 @@ const Navigation = () => {
       route: "/",
     },
     {
-      label: "Services",
-      route: "/services",
+      label: "Attractions",
+      route: "/attractions",
     },
     {
       label: "About us",
@@ -96,8 +96,10 @@ const Navigation = () => {
       <div className="hidden lg:block">
         <Flex gap="middle" align="center">
           {menu.map((item) => (
-            <Link className="mx-4 " key={item.label} href={item.route}>
-              <Button type="link">{item.label}</Button>
+            <Link key={item.label} href={item.route}>
+              <Button className=" text-white font-bold" type="link">
+                {item.label}
+              </Button>
             </Link>
           ))}
 
