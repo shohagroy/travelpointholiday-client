@@ -8,6 +8,8 @@ export default function Home() {
         <Button type="primary" danger>
           hell
         </Button>
+
+        <p className="bg-red-200 border-b border-black">kajsdhfkasflk</p>
       </main>
     </>
   );
