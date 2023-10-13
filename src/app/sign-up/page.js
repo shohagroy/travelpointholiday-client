@@ -1,20 +1,25 @@
 "use client";
 
 import React from "react";
-import { Button, Col, Divider, Form, Row, Space } from "antd";
+import { Button, Col, Divider, Row } from "antd";
 import Head from "next/head";
-import FormInput from "@/components/form/FormInput";
-import { useForm, FormProvider } from "react-hook-form";
+import FormInput from "@/components/forms/FormInput";
 import loginImage from "../../assets/login-image.png";
 import Image from "next/image";
 import Header from "@/shared/header/Header";
 import Link from "next/link";
+import {
+  GithubOutlined,
+  FacebookOutlined,
+  GoogleOutlined,
+} from "@ant-design/icons";
+import Form from "@/components/forms/From";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SignupSchema } from "@/schemas/login";
 
 const SignUpPage = () => {
-  const methods = useForm();
-
   const onSubmit = async (data) => {
-    // Handle form submission here
+    console.log(data);
   };
 
   return (
@@ -30,7 +35,7 @@ const SignUpPage = () => {
             justify="center"
             align="middle"
             style={{
-              minHeight: "60vh",
+              minHeight: "70vh",
             }}
           >
             <Col sm={12} md={16} lg={10}>
@@ -46,49 +51,78 @@ const SignUpPage = () => {
               </p>
 
               <div>
-                <FormProvider {...methods}>
-                  <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <div>
-                      <FormInput
-                        name="id"
-                        type="text"
-                        size="large"
-                        label="Email"
-                        required
-                      />
-                    </div>
-                    <div
-                      style={{
-                        margin: "15px 0px",
-                      }}
-                    >
-                      <FormInput
-                        name="password"
-                        type="password"
-                        size="large"
-                        label="Password"
-                        required
-                      />
-                    </div>
+                <Form
+                  submitHandler={onSubmit}
+                  resolver={yupResolver(SignupSchema)}
+                >
+                  <div>
+                    <FormInput
+                      name="email"
+                      type="email"
+                      size="large"
+                      label="Email"
+                      required
+                    />
+                  </div>
+                  <div
+                    style={{
+                      margin: "15px 0px",
+                    }}
+                  >
+                    <FormInput
+                      name="password"
+                      type="password"
+                      size="large"
+                      label="Password"
+                      required
+                    />
+                  </div>
 
-                    <div
-                      style={{
-                        margin: "15px 0px",
-                      }}
-                    >
-                      <FormInput
-                        name="password"
-                        type="password"
-                        size="large"
-                        label="Confirm Password"
-                        required
-                      />
-                    </div>
-                    <Button type="primary" htmlType="submit">
-                      Sign up
-                    </Button>
-                  </Form>
-                </FormProvider>
+                  <div
+                    style={{
+                      margin: "15px 0px",
+                    }}
+                  >
+                    <FormInput
+                      name="confirmPassword"
+                      type="password"
+                      size="large"
+                      label="Confirm Password"
+                      required
+                    />
+                  </div>
+                  <Button className="w-full" type="primary" htmlType="submit">
+                    Sign up
+                  </Button>
+                </Form>
+              </div>
+
+              <div>
+                <Divider>
+                  <small>or use one of these options</small>
+                </Divider>
+                <Button
+                  type="primary"
+                  danger
+                  icon={<GoogleOutlined />}
+                  className="w-full"
+                >
+                  Continue with Google
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<FacebookOutlined />}
+                  className="w-full mt-2"
+                >
+                  Continue with Facebook
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<GithubOutlined />}
+                  className="w-full mt-2 bg-gray-800"
+                >
+                  Continue with Github
+                </Button>
               </div>
             </Col>
           </Row>

@@ -1,6 +1,8 @@
-import React from "react";
-import { useFormContext, Controller } from "react-hook-form";
+"use client";
+
+import { getErrorMessageByPropertyName } from "@/utils/schema-validator";
 import { Input } from "antd";
+import { useFormContext, Controller } from "react-hook-form";
 
 const FormInput = ({
   name,
@@ -9,10 +11,16 @@ const FormInput = ({
   value,
   id,
   placeholder,
+  validation,
   label,
   required,
 }) => {
-  const methods = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const errorMessage = getErrorMessageByPropertyName(errors, name);
 
   return (
     <>
@@ -27,8 +35,8 @@ const FormInput = ({
       ) : null}
       {label ? label : null}
       <Controller
+        control={control}
         name={name}
-        control={methods.control}
         render={({ field }) =>
           type === "password" ? (
             <Input.Password
@@ -49,6 +57,7 @@ const FormInput = ({
           )
         }
       />
+      <small style={{ color: "red" }}>{errorMessage}</small>
     </>
   );
 };
