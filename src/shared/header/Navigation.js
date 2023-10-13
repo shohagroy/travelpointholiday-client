@@ -80,6 +80,16 @@ const Navigation = () => {
         </Button>
       ),
     },
+    {
+      key: "5",
+      label: (
+        <Link href={"/login"}>
+          <Button type="primary" style={{ width: "100%", margin: "0px 0" }}>
+            Log In
+          </Button>
+        </Link>
+      ),
+    },
   ];
 
   const smMenuItems = menu?.map((item) => {
