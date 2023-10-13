@@ -25,7 +25,7 @@ const BreadcrumbBanar = ({ breadItems = [], name, tittle }) => {
           <p>Travel Point | {name}</p>
           <h2 className="text-5xl font-bold">{tittle}</h2>
           <Breadcrumb
-            className="bg-white px-6 py-1 m-2 rounded-md"
+            className="bg-white px-6 py-1 mt-4 rounded-md"
             separator=">"
             items={[
               {

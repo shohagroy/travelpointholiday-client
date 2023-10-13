@@ -8,35 +8,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const cartData = [
-  {
-    id: 1,
-    title: "Product 1",
-    price: 100,
-    discount: 10,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    title: "Product 2",
-    price: 50,
-    discount: 5,
-    quantity: 1,
-  },
-  // Add more dummy cart items here
-];
-
 const CartDrawer = ({ open, setOpen }) => {
-  const calculateSubtotal = (data) => {
-    return data.reduce(
-      (acc, product) =>
-        acc +
-        (product.price - (product.price * product.discount) / 100) *
-          product.quantity,
-      0
-    );
-  };
-
   return (
     <Drawer
       className="bg-[#003B95]"
@@ -56,6 +28,22 @@ const CartDrawer = ({ open, setOpen }) => {
           </Button>
         </Flex>
       }
+      footer={
+        <Card
+          title={
+            <Flex justify="space-around" className="font-bold text-2xl">
+              <p>Subtotal:</p>
+              <p>$1232</p>
+            </Flex>
+          }
+        >
+          <Link href={"/my-carts"}>
+            <Button className="w-full" type="primary">
+              View Cart
+            </Button>
+          </Link>
+        </Card>
+      }
       placement="right"
       closable={false}
       width={"500px"}
@@ -63,8 +51,8 @@ const CartDrawer = ({ open, setOpen }) => {
       open={open}
       getContainer={false}
     >
-      <div className="w-full h-full overflow-auto bg-gray-200 rounded-md p-2 text-black">
-        {[...Array(10)].map((items, i) => (
+      <div className="w-full h-full relative overflow-auto bg-gray-200 rounded-md p-2 text-black">
+        {[...Array(12)].map((items, i) => (
           <Card
             key={i}
             title={<p>Burj Khalifa Admission Tickets: Floors 124 and 125</p>}
@@ -122,7 +110,7 @@ const CartDrawer = ({ open, setOpen }) => {
                 className="w-full mt-2"
                 icon={<CloseOutlined />}
               >
-                Remove
+                Remove from Cart
               </Button>
             </div>
           </Card>
