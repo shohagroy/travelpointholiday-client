@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const BreadCrumb = ({ breadItems = [] }) => {
   return (
-    <div className="max-w-7xl mx-auto p-2 lg:px-6 ">
+    <div className="max-w-7xl mx-auto p-2 ">
       <Breadcrumb
         items={[
           {

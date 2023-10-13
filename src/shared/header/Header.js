@@ -13,7 +13,7 @@ const Header = () => {
     <div className="bg-[#013A95] border-b-2 text-white">
       <div className="max-w-7xl mx-auto ">
         <Flex
-          style={{ width: "100%", padding: "20px" }}
+          style={{ width: "100%", padding: "10px 5px" }}
           gap="middle"
           justify="space-between"
           align="center"
