@@ -19,8 +19,10 @@ import {
 } from "@ant-design/icons";
 import Image from "next/image";
 import Logo from "../../assets/tplogo.png";
+import CartDrawer from "@/components/ui/CartDrawer";
 
 const Navigation = () => {
+  const [cartOpen, setCartOprn] = useState(false);
   const menu = [
     {
       label: "Home",
@@ -106,7 +108,12 @@ const Navigation = () => {
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
               <Badge count={99}>
-                <Avatar size="large" icon={<ShoppingCartOutlined />} />
+                <Avatar
+                  className="cursor-pointer"
+                  onClick={() => setCartOprn(!cartOpen)}
+                  size="large"
+                  icon={<ShoppingCartOutlined />}
+                />
               </Badge>
               <Badge count={99}>
                 <Avatar size="large" icon={<BellOutlined />} />
@@ -183,6 +190,8 @@ const Navigation = () => {
           items={smMenuItems}
         />
       </Drawer>
+
+      <CartDrawer open={cartOpen} setOpen={setCartOprn} />
     </div>
   );
 };
