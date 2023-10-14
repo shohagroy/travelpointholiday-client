@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Row, message } from "antd";
 import Head from "next/head";
 import FormInput from "@/components/forms/FormInput";
 import loginImage from "../../assets/login-image.png";
@@ -16,10 +16,41 @@ import {
 import Form from "@/components/forms/From";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignupSchema } from "@/schemas/login";
+import { useCreateUserMutation } from "@/redux/features/user/userApi";
+import { useRouter } from "next/navigation";
+import { storeUserInfo } from "@/services/auth.service";
 
 const SignUpPage = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const router = useRouter();
+
+  const [createUser, { isLoading }] = useCreateUserMutation();
+
   const onSubmit = async (data) => {
-    console.log(data);
+    const { email, password, confirmPassword } = data;
+    if (password !== confirmPassword) {
+      return messageApi.open({
+        type: "error",
+        content: "Password does not match!",
+      });
+    }
+    const result = await createUser({ email, password }).unwrap();
+
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+
+    if (result?.data?.accessToken) {
+      messageApi.open({
+        type: "success",
+        content: "User created Successfully!",
+      });
+      storeUserInfo({ accessToken: result?.data?.accessToken });
+      router.push(router.query?.callbackUrl || "/");
+    }
   };
 
   return (
@@ -29,6 +60,7 @@ const SignUpPage = () => {
       </Head>
 
       <main>
+        {contextHolder}
         <Header />
         <section className="max-w-7xl mx-auto">
           <Row
@@ -91,8 +123,13 @@ const SignUpPage = () => {
                       required
                     />
                   </div>
-                  <Button className="w-full" type="primary" htmlType="submit">
-                    Sign up
+                  <Button
+                    className="w-full"
+                    type="primary"
+                    htmlType="submit"
+                    loading={isLoading}
+                  >
+                    {isLoading ? "Loading..." : "Sign Up"}
                   </Button>
                 </Form>
               </div>

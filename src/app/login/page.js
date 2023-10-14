@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Row, message } from "antd";
 import Head from "next/head";
 import FormInput from "@/components/forms/FormInput";
-import { useForm, FormProvider } from "react-hook-form";
 import loginImage from "../../assets/login-image.png";
 import Image from "next/image";
 import Header from "@/shared/header/Header";
@@ -17,26 +16,34 @@ import {
 import Form from "@/components/forms/From";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schemas/login";
+import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/redux/features/user/userApi";
+import { storeUserInfo } from "@/services/auth.service";
 
 const LoginPage = () => {
-  // const router = useRouter();
+  const [messageApi, contextHolder] = message.useMessage();
+  const router = useRouter();
 
-  // console.log(isLoggedIn());
+  const [login, { isLoading }] = useLoginMutation();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // try {
-    //   const res = await userLogin({ ...data }).unwrap();
-    //   // console.log(res);
-    //   if (res?.accessToken) {
-    //     router.push("/profile");
-    //     message.success("User logged in successfully!");
-    //   }
-    //   storeUserInfo({ accessToken: res?.accessToken });
-    //   // console.log(res);
-    // } catch (err) {
-    //   console.error(err.message);
-    // }
+    const result = await login(data).unwrap();
+
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+
+    if (result?.data?.accessToken) {
+      messageApi.open({
+        type: "success",
+        content: "User created Successfully!",
+      });
+      storeUserInfo({ accessToken: result?.data?.accessToken });
+      router.push(router.query?.callbackUrl || "/");
+    }
   };
   return (
     <>
@@ -45,6 +52,7 @@ const LoginPage = () => {
       </Head>
 
       <main>
+        {contextHolder}
         <Header />
         <section className="max-w-7xl mx-auto">
           <Row
@@ -93,8 +101,13 @@ const LoginPage = () => {
                       required
                     />
                   </div>
-                  <Button className="w-full" type="primary" htmlType="submit">
-                    Login
+                  <Button
+                    className="w-full"
+                    type="primary"
+                    htmlType="submit"
+                    loading={isLoading}
+                  >
+                    {isLoading ? "Loading" : "Login"}
                   </Button>
                 </Form>
               </div>

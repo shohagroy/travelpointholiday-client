@@ -45,135 +45,132 @@ const ContactUs = () => {
           tittle={"Get In Touch"}
         />
 
-        <section className="max-w-7xl mx-auto">
+        <section className="">
           <div className="mt-16 lg:mt-0">
-            <div className="bg-white">
-              <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
-                <Row gutter={16}>
-                  <Col span={24} lg={8}>
-                    <Card className="border p-4 rounded-lg text-center">
-                      {/* <Text type="success" className="text-4xl mb-4">
-                        <MailOutlined />
-                      </Text> */}
-                      <Image
-                        preview={false}
-                        src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-1.b3ea7c8a.png&w=96&q=75"
-                        alt=""
-                      />
-                      <Title level={3} className="mb-2 font-bold">
-                        Contact
-                      </Title>
-                      <p className="mb-0 opacity-90 leading-7">
-                        <a
-                          className="text-2xl font-semibold"
-                          href="mailto:shohagroy@yahoo.com"
-                        >
-                          shohagroy@yahoo.com
-                        </a>
-                        <br />
-                        Enteractively grow empowered for process-centric total
-                        linkage.
-                      </p>
-                    </Card>
-                  </Col>
-                  <Col span={24} lg={8}>
-                    <Card className="border p-4 rounded-lg text-center">
-                      {/* <Text type="success" className="text-4xl mb-4">
+            <div className="lg:py-20 py-10">
+              <Row className="max-w-7xl mx-auto" gutter={16}>
+                <Col span={24} lg={8}>
+                  <Card className="border p-4 rounded-lg text-center">
+                    <Image
+                      preview={false}
+                      src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-1.b3ea7c8a.png&w=96&q=75"
+                      alt=""
+                    />
+                    <Title level={3} className="mb-2 font-bold">
+                      Contact
+                    </Title>
+                    <p className="mb-0 opacity-90 leading-7">
+                      <a
+                        className="text-2xl font-semibold"
+                        href="mailto:shohagroy@yahoo.com"
+                      >
+                        shohagroy@yahoo.com
+                      </a>
+                      <br />
+                      Enteractively grow empowered for process-centric total
+                      linkage.
+                    </p>
+                  </Card>
+                </Col>
+                <Col span={24} lg={8}>
+                  <Card className="border p-4 rounded-lg text-center">
+                    {/* <Text type="success" className="text-4xl mb-4">
                         <PhoneOutlined />
                       </Text> */}
-                      <Image
-                        preview={false}
-                        src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-3.9effa1ee.png&w=64&q=75"
-                        alt=""
-                      />
-                      <Title level={3} className="mb-2 font-bold">
-                        Call Us
-                      </Title>
-                      <p className="mb-0 opacity-90 leading-7">
-                        <a
-                          className="text-2xl font-semibold"
-                          href="tel:+8801760567555"
-                        >
-                          +880 1760 567 555
-                        </a>{" "}
-                        <br />
-                        Distinctively disseminate focused solutions
-                        clicks-and-mortar ministate.
-                      </p>
-                    </Card>
-                  </Col>
-                  <Col span={24} lg={8}>
-                    <Card className="border p-4 rounded-lg text-center">
-                      <Image
-                        preview={false}
-                        src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-2.a19f544a.png&w=128&q=75"
-                        alt=""
-                      />
-                      <Title level={3} className="mb-2 font-bold">
-                        Social Media
-                      </Title>
-                      <p className="mb-0 opacity-90 leading-7">
-                        Follow us on social media
-                      </p>
-                      <div className="flex justify-center items-center mt-2">
-                        <a
-                          href="https://www.facebook.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button
-                            type="link"
-                            icon={<FacebookFilled />}
-                            size="large"
-                            className="text-5xl"
-                          />
-                        </a>
-                        <a
-                          href="https://www.twitter.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button
-                            type="link"
-                            icon={<TwitterOutlined />}
-                            size="large"
-                            className="text-5xl"
-                          />
-                        </a>
-                        <a
-                          href="https://www.linkedin.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button
-                            type="link"
-                            icon={<LinkedinFilled />}
-                            size="large"
-                            className="text-5xl"
-                          />
-                        </a>
-                        <a
-                          href="https://www.youtube.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button
-                            type="link"
-                            icon={<YoutubeFilled />}
-                            size="large"
-                            className="text-5xl"
-                          />
-                        </a>
-                      </div>
-                    </Card>
-                  </Col>
-                </Row>
+                    <Image
+                      preview={false}
+                      src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-3.9effa1ee.png&w=64&q=75"
+                      alt=""
+                    />
+                    <Title level={3} className="mb-2 font-bold">
+                      Call Us
+                    </Title>
+                    <p className="mb-0 opacity-90 leading-7">
+                      <a
+                        className="text-2xl font-semibold"
+                        href="tel:+8801760567555"
+                      >
+                        +880 1760 567 555
+                      </a>{" "}
+                      <br />
+                      Distinctively disseminate focused solutions
+                      clicks-and-mortar ministate.
+                    </p>
+                  </Card>
+                </Col>
+                <Col span={24} lg={8}>
+                  <Card className="border p-4 rounded-lg text-center">
+                    <Image
+                      preview={false}
+                      src="https://hamart-shop.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcontact-icon-2.a19f544a.png&w=128&q=75"
+                      alt=""
+                    />
+                    <Title level={3} className="mb-2 font-bold">
+                      Social Media
+                    </Title>
+                    <p className="mb-0 opacity-90 leading-7">
+                      Follow us on social media
+                    </p>
+                    <div className="flex justify-center items-center mt-2">
+                      <a
+                        href="https://www.facebook.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button
+                          type="link"
+                          icon={<FacebookFilled />}
+                          size="large"
+                          className="text-5xl"
+                        />
+                      </a>
+                      <a
+                        href="https://www.twitter.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button
+                          type="link"
+                          icon={<TwitterOutlined />}
+                          size="large"
+                          className="text-5xl"
+                        />
+                      </a>
+                      <a
+                        href="https://www.linkedin.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button
+                          type="link"
+                          icon={<LinkedinFilled />}
+                          size="large"
+                          className="text-5xl"
+                        />
+                      </a>
+                      <a
+                        href="https://www.youtube.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button
+                          type="link"
+                          icon={<YoutubeFilled />}
+                          size="large"
+                          className="text-5xl"
+                        />
+                      </a>
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
 
-                <div className="my-10">
-                  <Subscribe />
-                </div>
+              <div className="my-10">
+                <Subscribe />
+              </div>
 
-                <Row gutter={16} className="pt-12">
+              <div className="">
+                <Row gutter={16} className="pt-12  max-w-7xl mx-auto">
                   <Col xs={24} lg={12}>
                     <Image
                       preview={false}

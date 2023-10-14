@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import {
   Avatar,
@@ -16,13 +18,38 @@ import {
   BellOutlined,
   CloseOutlined,
   BarsOutlined,
+  PayCircleOutlined,
+  SlackOutlined,
+  MessageOutlined,
+  LogoutOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import Logo from "../../assets/tplogo.png";
 import CartDrawer from "@/components/ui/CartDrawer";
+import { decodedToken } from "@/utils/jwt";
+import { getFromLocalStorage } from "@/utils/local-storage";
+import { removeUserInfo } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
 
 const Navigation = () => {
   const [cartOpen, setCartOprn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
+  let tokenInfo = {};
+
+  const token = getFromLocalStorage("accessToken");
+
+  if (token) {
+    tokenInfo = decodedToken(token);
+  }
+  const { email } = tokenInfo || {};
+
+  const logOutHandelar = () => {
+    removeUserInfo("accessToken");
+    router.push("/login");
+  };
+
   const menu = [
     {
       label: "Home",
@@ -42,55 +69,96 @@ const Navigation = () => {
     },
   ];
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const items = [
-    {
-      key: "1",
-      label: (
-        <Button type="primary" style={{ width: "100%", margin: "0px 0" }}>
-          Dashboard
-        </Button>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <Button type="primary" style={{ width: "100%", margin: "0px 0" }}>
-          User Profile
-        </Button>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <Button type="primary" style={{ width: "100%", margin: "0px 0" }}>
-          Change Password
-        </Button>
-      ),
-    },
-    {
-      key: "4",
-      label: (
-        <Button
-          type="primary"
-          danger
-          style={{ width: "100%", margin: "0px 0" }}
-        >
-          Log Out
-        </Button>
-      ),
-    },
-    {
-      key: "5",
-      label: (
-        <Link href={"/login"}>
-          <Button type="primary" style={{ width: "100%", margin: "0px 0" }}>
-            Log In
-          </Button>
-        </Link>
-      ),
-    },
-  ];
+  const items = email
+    ? [
+        {
+          key: "1",
+          label: (
+            <Link href={"/manage-account"}>
+              <Button
+                icon={<UserOutlined />}
+                type="link"
+                style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+              >
+                Manage Account
+              </Button>
+            </Link>
+          ),
+        },
+        {
+          key: "2",
+          label: (
+            <Link href={"/manage-account"}>
+              <Button
+                icon={<SlackOutlined />}
+                type="link"
+                style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+              >
+                Trips
+              </Button>
+            </Link>
+          ),
+        },
+        {
+          key: "3",
+          label: (
+            <Link href={"/manage-account"}>
+              <Button
+                icon={<PayCircleOutlined />}
+                type="link"
+                style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+              >
+                Rewards & Wallet
+              </Button>
+            </Link>
+          ),
+        },
+        {
+          key: "4",
+          label: (
+            <Link href={"/manage-account"}>
+              <Button
+                icon={<MessageOutlined />}
+                type="link"
+                style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+              >
+                Reviews
+              </Button>
+            </Link>
+          ),
+        },
+
+        {
+          key: "5",
+          label: (
+            <Button
+              onClick={logOutHandelar}
+              type="link"
+              danger
+              icon={<LogoutOutlined />}
+              style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+            >
+              Log Out
+            </Button>
+          ),
+        },
+      ]
+    : [
+        {
+          key: "5",
+          label: (
+            <Link href="/login">
+              <Button
+                icon={<LoginOutlined />}
+                type="link"
+                style={{ width: "100%", margin: "0px 0" }}
+              >
+                Log In
+              </Button>
+            </Link>
+          ),
+        },
+      ];
 
   const smMenuItems = menu?.map((item) => {
     return {
@@ -117,17 +185,21 @@ const Navigation = () => {
 
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
-              <Badge count={99}>
-                <Avatar
-                  className="cursor-pointer"
-                  onClick={() => setCartOprn(!cartOpen)}
-                  size="large"
-                  icon={<ShoppingCartOutlined />}
-                />
-              </Badge>
-              <Badge count={99}>
-                <Avatar size="large" icon={<BellOutlined />} />
-              </Badge>
+              {email && (
+                <div>
+                  <Badge count={99}>
+                    <Avatar
+                      className="cursor-pointer"
+                      onClick={() => setCartOprn(!cartOpen)}
+                      size="large"
+                      icon={<ShoppingCartOutlined />}
+                    />
+                  </Badge>
+                  <Badge count={99}>
+                    <Avatar size="large" icon={<BellOutlined />} />
+                  </Badge>
+                </div>
+              )}
 
               <Dropdown
                 menu={{

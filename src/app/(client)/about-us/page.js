@@ -145,56 +145,48 @@ const AboutUs = () => {
 
         <div>
           <div className="p-3 lg:p-0">
-            <div className="">
-              <div className="bg-white">
-                <div className="py-10">
-                  <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
-                </div>
+            <div className="py-10">
+              <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
+            </div>
 
-                {/* =====> */}
-                <div className="max-w-7xl mx-auto">
-                  <div className="max-w-2xl">
-                    <h3 className="text-xl lg:text-3xl mb-4 font-semibold">
-                      Our Client Reviews
-                    </h3>
-                  </div>
-
-                  <Row gutter={16}>
-                    {[...Array(2)].map((item, i) => (
-                      <Col span={12} key={i}>
-                        <ReviewCard />
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
+            {/* =====> */}
+            <div className="max-w-7xl mx-auto">
+              <div className="max-w-2xl">
+                <h3 className="text-xl lg:text-3xl mb-4 font-semibold">
+                  Our Client Reviews
+                </h3>
               </div>
+
+              <Row gutter={16}>
+                {[...Array(2)].map((item, i) => (
+                  <Col span={12} key={i}>
+                    <ReviewCard />
+                  </Col>
+                ))}
+              </Row>
             </div>
           </div>
         </div>
 
         <section className="max-w-7xl mx-auto my-6">
           <div className="p-3 lg:p-0">
-            <div className="">
-              <div className="bg-white">
-                <div className="py-10">
-                  <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
-                  {/* welcome to our part end */}
-                </div>
+            <div className="py-10">
+              <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
+              {/* welcome to our part end */}
+            </div>
 
-                {/* =====> */}
-                <div className=" py-10">
-                  <div className="max-w-screen-2xl mx-auto">
-                    <div className="max-w-2xl">
-                      <h3 className="text-xl lg:text-3xl mb-4 font-semibold">
-                        One Team , Many Talents
-                      </h3>
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-6 xl:gap-x-8">
-                      {teamMembers.map((teamMember) => (
-                        <TeamCard key={teamMember.name} data={teamMember} />
-                      ))}
-                    </div>
-                  </div>
+            {/* =====> */}
+            <div className=" py-10">
+              <div className="max-w-screen-2xl mx-auto">
+                <div className="max-w-2xl">
+                  <h3 className="text-xl lg:text-3xl mb-4 font-semibold">
+                    One Team , Many Talents
+                  </h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-6 xl:gap-x-8">
+                  {teamMembers.map((teamMember) => (
+                    <TeamCard key={teamMember.name} data={teamMember} />
+                  ))}
                 </div>
               </div>
             </div>

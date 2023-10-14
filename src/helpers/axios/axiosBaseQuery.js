@@ -1,9 +1,9 @@
-const { instance: axiosInstance } = require("./axiosInstance");
+import { instance } from "./axiosInstance";
 
 const axiosBaseQuery = ({ baseUrl = "" } = { baseUrl: "" }) => {
   return async ({ url, method, data, params, contentType }) => {
     try {
-      const result = await axiosInstance({
+      const result = await instance({
         url: baseUrl + url,
         method,
         data,
@@ -11,9 +11,12 @@ const axiosBaseQuery = ({ baseUrl = "" } = { baseUrl: "" }) => {
         headers: {
           contentType: contentType || "application/json",
         },
+        withCredentials: true,
       });
-      return { data: result.data };
+
+      return { data: result };
     } catch (axiosError) {
+      console.log(axiosError);
       let err = axiosError;
       return {
         error: {
