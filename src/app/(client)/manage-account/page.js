@@ -20,7 +20,7 @@ const ManageAccountPage = () => {
       details: `Update your info and find out how it's used.`,
       icon: <UserAddOutlined />,
       lebel: "Manage personal details",
-      link: "/manage-account",
+      link: "/manage-account/personal-details",
     },
     {
       name: "Preferences",
@@ -60,6 +60,7 @@ const ManageAccountPage = () => {
       link: "/manage-account",
     },
   ];
+
   return (
     <>
       <Head>

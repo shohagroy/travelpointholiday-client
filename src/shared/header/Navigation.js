@@ -33,19 +33,16 @@ import { removeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
 const Navigation = () => {
-  const [cartOpen, setCartOprn] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
-  let tokenInfo = {};
 
   const token = getFromLocalStorage("accessToken");
+  const tokenInfo = token ? decodedToken(token) : {};
 
-  if (token) {
-    tokenInfo = decodedToken(token);
-  }
-  const { email } = tokenInfo || {};
+  const { email } = tokenInfo;
 
-  const logOutHandelar = () => {
+  const logOutHandler = () => {
     removeUserInfo("accessToken");
     router.push("/login");
   };
@@ -74,7 +71,7 @@ const Navigation = () => {
         {
           key: "1",
           label: (
-            <Link href={"/manage-account"}>
+            <Link href="/manage-account">
               <Button
                 icon={<UserOutlined />}
                 type="link"
@@ -88,7 +85,7 @@ const Navigation = () => {
         {
           key: "2",
           label: (
-            <Link href={"/manage-account"}>
+            <Link href="/manage-account">
               <Button
                 icon={<SlackOutlined />}
                 type="link"
@@ -102,7 +99,7 @@ const Navigation = () => {
         {
           key: "3",
           label: (
-            <Link href={"/manage-account"}>
+            <Link href="/manage-account">
               <Button
                 icon={<PayCircleOutlined />}
                 type="link"
@@ -116,7 +113,7 @@ const Navigation = () => {
         {
           key: "4",
           label: (
-            <Link href={"/manage-account"}>
+            <Link href="/manage-account">
               <Button
                 icon={<MessageOutlined />}
                 type="link"
@@ -127,12 +124,11 @@ const Navigation = () => {
             </Link>
           ),
         },
-
         {
           key: "5",
           label: (
             <Button
-              onClick={logOutHandelar}
+              onClick={logOutHandler}
               type="link"
               danger
               icon={<LogoutOutlined />}
@@ -177,7 +173,7 @@ const Navigation = () => {
         <Flex gap="middle" align="center">
           {menu.map((item) => (
             <Link key={item.label} href={item.route}>
-              <Button className=" text-white font-bold" type="link">
+              <Button className="text-white font-bold" type="link">
                 {item.label}
               </Button>
             </Link>
@@ -185,12 +181,26 @@ const Navigation = () => {
 
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
-              {email && (
+              {email ? (
                 <div>
                   <Badge count={99}>
                     <Avatar
                       className="cursor-pointer"
-                      onClick={() => setCartOprn(!cartOpen)}
+                      onClick={() => setCartOpen(!cartOpen)}
+                      size="large"
+                      icon={<ShoppingCartOutlined />}
+                    />
+                  </Badge>
+                  <Badge count={99}>
+                    <Avatar size="large" icon={<BellOutlined />} />
+                  </Badge>
+                </div>
+              ) : (
+                <div>
+                  <Badge count={99}>
+                    <Avatar
+                      className="cursor-pointer"
+                      onClick={() => setCartOpen(!cartOpen)}
                       size="large"
                       icon={<ShoppingCartOutlined />}
                     />
@@ -221,7 +231,7 @@ const Navigation = () => {
         </Flex>
       </div>
 
-      <div className="block lg:hidden ">
+      <div className="block lg:hidden">
         {menuOpen ? (
           <Button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -245,8 +255,8 @@ const Navigation = () => {
       <Drawer
         title={
           <Flex justify="space-between" align="center">
-            <Link href={"/"}>
-              <Image src={Logo} alt="Logo." height={50} width={150} />
+            <Link href="/">
+              <Image src={Logo} alt="Logo" height={50} width={150} />
             </Link>
 
             <Button
@@ -273,7 +283,7 @@ const Navigation = () => {
         />
       </Drawer>
 
-      <CartDrawer open={cartOpen} setOpen={setCartOprn} />
+      <CartDrawer open={cartOpen} setOpen={setCartOpen} />
     </div>
   );
 };

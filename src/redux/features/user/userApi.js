@@ -19,7 +19,40 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+
+    updateInfo: build.mutation({
+      query: (data) => ({
+        url: "/users/update-info",
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["users"],
+    }),
+
+    getUserProfile: build.query({
+      query: (data) => ({
+        url: "/users/get-profile",
+        method: "GET",
+        data,
+      }),
+      providesTags: ["users"],
+    }),
+
+    changeUserPassword: build.mutation({
+      query: (data) => ({
+        url: "/auth/change-password",
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useLoginMutation } = userApi;
+export const {
+  useCreateUserMutation,
+  useLoginMutation,
+  useUpdateInfoMutation,
+  useGetUserProfileQuery,
+  useChangeUserPasswordMutation,
+} = userApi;

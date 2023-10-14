@@ -1,11 +1,8 @@
-"use client";
-
 import Banar from "@/components/Banar";
 import ExploreDestinations from "@/components/ExploreDestinations";
 import SearchAttractions from "@/components/SearchAttractions";
 import Subscribe from "@/components/Subscribe";
 import TopDestinations from "@/components/TopDestinations";
-import PrivateRouteHOC from "@/routes/PrivateRoute";
 import Head from "next/head";
 
 const Home = () => {
@@ -38,8 +35,4 @@ const Home = () => {
   );
 };
 
-Home.getLayout = (page) => {
-  return <PrivateRouteHOC>{page}</PrivateRouteHOC>;
-};
-
-export default PrivateRouteHOC(Home);
+export default Home;
