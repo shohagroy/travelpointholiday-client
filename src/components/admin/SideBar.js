@@ -40,6 +40,16 @@ const SideBar = () => {
       label: "Software Setting",
       key: "Software Setting",
       icon: <SettingFilled />,
+      children: [
+        {
+          label: <Link href={`/admin/manage-category`}>Manage Category</Link>,
+          key: `/admin/manage-category`,
+        },
+        {
+          label: <Link href={`/admin/manage-country`}>Manage Country</Link>,
+          key: `/admin/manage-country`,
+        },
+      ],
     },
     {
       label: "Website Setting",

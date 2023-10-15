@@ -13,8 +13,8 @@ const AdminDashboard = () => {
           <AdminBreadCrumb
             items={[
               {
-                label: "super_admin",
-                link: "/super_admin",
+                label: "Admin",
+                link: "/admin",
               },
             ]}
           />

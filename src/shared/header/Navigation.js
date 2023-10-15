@@ -23,6 +23,7 @@ import {
   MessageOutlined,
   LogoutOutlined,
   LoginOutlined,
+  DashboardFilled,
 } from "@ant-design/icons";
 import Image from "next/image";
 import Logo from "../../assets/tplogo.png";
@@ -40,7 +41,7 @@ const Navigation = () => {
   const token = getFromLocalStorage("accessToken");
   const tokenInfo = token ? decodedToken(token) : {};
 
-  const { email } = tokenInfo;
+  const { email, role } = tokenInfo;
 
   const logOutHandler = () => {
     removeUserInfo("accessToken");
@@ -155,6 +156,23 @@ const Navigation = () => {
           ),
         },
       ];
+
+  if (email && (role === "super_admin" || "admin")) {
+    items.unshift({
+      key: "6",
+      label: (
+        <Link href="/admin">
+          <Button
+            icon={<DashboardFilled />}
+            type="link"
+            style={{ textAlign: "left", width: "100%", margin: "0px 0" }}
+          >
+            Dashboard
+          </Button>
+        </Link>
+      ),
+    });
+  }
 
   const smMenuItems = menu?.map((item) => {
     return {
