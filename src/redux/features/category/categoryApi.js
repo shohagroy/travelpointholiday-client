@@ -36,6 +36,14 @@ export const categoryApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["categories"],
     }),
+
+    getAllCategoryData: build.query({
+      query: () => ({
+        url: "/categories/get-all",
+        method: "GET",
+      }),
+      providesTags: ["categories"],
+    }),
   }),
 });
 
@@ -44,4 +52,5 @@ export const {
   useGetAllCategoriesQuery,
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,
+  useGetAllCategoryDataQuery,
 } = categoryApi;

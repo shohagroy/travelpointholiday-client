@@ -2,6 +2,7 @@
 
 import { Select } from "antd";
 import { useFormContext, Controller } from "react-hook-form";
+import { getErrorMessageByPropertyName } from "@/utils/schema-validator";
 
 const FormSelectField = ({
   name,
@@ -14,7 +15,12 @@ const FormSelectField = ({
   loading,
   handleChange,
 }) => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const errorMessage = getErrorMessageByPropertyName(errors, name);
 
   return (
     <>
@@ -34,6 +40,7 @@ const FormSelectField = ({
           />
         )}
       />
+      <small style={{ color: "red" }}>{errorMessage}</small>
     </>
   );
 };

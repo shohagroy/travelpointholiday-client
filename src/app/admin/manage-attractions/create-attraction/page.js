@@ -1,0 +1,276 @@
+"use client";
+
+import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
+import FormDatePicker from "@/components/forms/FormDatePicker";
+import FormInput from "@/components/forms/FormInput";
+import FormSelectField from "@/components/forms/FormSelectField";
+import FormTimePicker from "@/components/forms/FormTimePicker";
+import Form from "@/components/forms/From";
+import EditTools from "@/components/ui/EditTools";
+import InputImage from "@/components/ui/InputImage";
+import { useGetAllCategoryDataQuery } from "@/redux/features/category/categoryApi";
+import { useGetAllCitiesQuery } from "@/redux/features/city/cityAPi";
+import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
+import { attractionSchema } from "@/schemas/attraction";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Card, Col, Flex, Row } from "antd";
+import Head from "next/head";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+
+const CreateAttractionPage = () => {
+  const [images, setImages] = useState([]);
+  const [imgPreview, setImgPreview] = useState(false);
+  const [description, setDescription] = useState("");
+  const [countryId, setCountryId] = useState("");
+
+  // console.log(images);
+  const { data: categoryData, isLoading: categoryLoading } =
+    useGetAllCategoryDataQuery();
+
+  const { data: countryData, isLoading: countryLoading } =
+    useGetAllCountryDataQuery();
+
+  const { data: citiesData, isLoading: citiesLoading } = useGetAllCitiesQuery({
+    countryId: countryId,
+  });
+
+  const breadCrumbItems = [
+    {
+      label: <Link href={"/admin"}>Admin</Link>,
+      link: "/admin",
+    },
+    {
+      label: "Manage Attractions",
+      link: "/admin/manage-attractions",
+    },
+    {
+      label: "Create Attractions",
+      link: "/admin/manage-attractions/create-attraction",
+    },
+  ];
+
+  const categoryOptions = categoryData?.data?.map((items) => {
+    return {
+      label: items.name,
+      value: items.id,
+    };
+  });
+
+  const countryOptions = countryData?.data?.map((items) => {
+    return {
+      label: items?.name,
+      value: items?.id,
+    };
+  });
+
+  const citiesOptions = citiesData?.data?.map((items) => {
+    return {
+      label: items?.name,
+      value: items?.id,
+    };
+  });
+
+  useEffect(() => {
+    if (images.length > 0) {
+      setImgPreview(true);
+    } else {
+      setImgPreview(false);
+    }
+  }, [images]);
+
+  const onSubmit = (data) => {
+    const attractionData = { ...data, description, images };
+    console.log(attractionData);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Travel Point | Attractions | Create Attractions</title>
+      </Head>
+
+      <main>
+        <section>
+          <AdminBreadCrumb items={breadCrumbItems} />
+
+          <div className="max-w-7xl mx-auto my-6">
+            <div className="my-4">
+              <Form
+                submitHandler={onSubmit}
+                resolver={yupResolver(attractionSchema)}
+              >
+                <Card
+                  title={
+                    <div>
+                      <h2>Attractions Information</h2>
+                    </div>
+                  }
+                >
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <div className="">
+                        <FormInput
+                          label={"Attraction Tittle"}
+                          name={"tittle"}
+                          required
+                          type={"text"}
+                          size="large"
+                        />
+                      </div>
+
+                      <div className="my-4">
+                        <FormInput
+                          label={"Banar tittle"}
+                          name={"banarTittle"}
+                          required
+                          type={"text"}
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={8}>
+                      <div className="my-4">
+                        <FormSelectField
+                          loading={categoryLoading}
+                          name={"categoryId"}
+                          label={"Select Category"}
+                          options={categoryOptions}
+                          required
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={8}>
+                      <div className="my-4">
+                        <FormSelectField
+                          name={"countryId"}
+                          handleChange={(e) => setCountryId(e)}
+                          loading={countryLoading}
+                          label={"Country Name"}
+                          options={countryOptions}
+                          placeholder="Select Country..."
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={8}>
+                      <div className="my-4">
+                        <FormSelectField
+                          loading={citiesLoading}
+                          name={"cityId"}
+                          label={"Select City"}
+                          options={citiesOptions}
+                          required
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={6}>
+                      <div className="my-4">
+                        <FormInput
+                          label={"Ticket Price (Adult)"}
+                          name={"price"}
+                          required
+                          type={"number"}
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={6}>
+                      <div className="my-4">
+                        <FormInput
+                          label={"Trip Duration"}
+                          name={"duration"}
+                          required
+                          type={"text"}
+                          size="large"
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={6}>
+                      <div className="my-4">
+                        <FormDatePicker
+                          label={"Trip Date"}
+                          name={"tripDate"}
+                          size="large"
+                          // onChange={(e) => console.log(e)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col span={6}>
+                      <div className="my-4">
+                        <FormTimePicker label={"Trip Time"} name={"tripTime"} />
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+
+                <Card
+                  className="my-4"
+                  title={
+                    <div>
+                      <h2>Attractions Images</h2>
+                    </div>
+                  }
+                >
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <div className="">
+                        <InputImage
+                          imgPreview={imgPreview}
+                          images={images}
+                          setImages={setImages}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+
+                <Card
+                  className="my-4"
+                  title={
+                    <div>
+                      <h2>Attractions Details</h2>
+                    </div>
+                  }
+                >
+                  <Row gutter={16}>
+                    <Col span={24}>
+                      <div className="my-4">
+                        <EditTools
+                          setValue={setDescription}
+                          value={description}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+
+                <Flex justify="center" align="center">
+                  <Button
+                    htmlType="submit"
+                    className="text-center my-6 mx-2"
+                    size="large"
+                    type="primary"
+                  >
+                    Create Attractions
+                  </Button>
+                </Flex>
+              </Form>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+};
+
+export default CreateAttractionPage;

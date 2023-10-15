@@ -10,6 +10,7 @@ import {
   SettingFilled,
   ToolFilled,
   PieChartFilled,
+  SlackOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import Logo from "../../assets/tplogo.png";
@@ -26,6 +27,36 @@ const SideBar = () => {
       key: "Dashboard",
       icon: <DashboardFilled />,
     },
+    {
+      label: "Attractions",
+      key: "Attractions",
+      icon: <SlackOutlined />,
+      children: [
+        {
+          label: (
+            <Link href={`/admin/manage-attractions`}>Manage Attractions</Link>
+          ),
+          key: `/admin/manage-attractions`,
+        },
+        {
+          label: (
+            <Link href={`/admin/manage-attractions/refund-list`}>
+              Refund List
+            </Link>
+          ),
+          key: `/admin/refund-list`,
+        },
+        {
+          label: (
+            <Link href={`/admin/manage-attractions/cancel-list`}>
+              Cancel List
+            </Link>
+          ),
+          key: `/admin/cancel-list`,
+        },
+      ],
+    },
+
     {
       label: "Manage Admins",
       key: "Manage Admins",
