@@ -20,6 +20,14 @@ export const countryApi = baseApi.injectEndpoints({
       providesTags: ["countries"],
     }),
 
+    getAllCountryData: build.query({
+      query: () => ({
+        url: "/countries/get-all",
+        method: "GET",
+      }),
+      providesTags: ["countries"],
+    }),
+
     deleteCountry: build.mutation({
       query: (id) => ({
         url: `/countries/${id}`,
@@ -44,4 +52,5 @@ export const {
   useGetAllCountriesQuery,
   useDeleteCountryMutation,
   useUpdateCountryMutation,
+  useGetAllCountryDataQuery,
 } = countryApi;

@@ -11,6 +11,7 @@ const FormSelectField = ({
   options,
   label,
   defaultValue,
+  loading,
   handleChange,
 }) => {
   const { control } = useFormContext();
@@ -23,6 +24,7 @@ const FormSelectField = ({
         name={name}
         render={({ field: { value, onChange } }) => (
           <Select
+            loading={loading}
             onChange={handleChange ? handleChange : onChange}
             size={size}
             options={options}

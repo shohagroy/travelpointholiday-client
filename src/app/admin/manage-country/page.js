@@ -2,15 +2,11 @@
 
 import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Button, Col, Input, Modal, Row, message } from "antd";
+import { Button, Col, Input, Row, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import {
-  useDeleteCategoryMutation,
-  useGetAllCategoriesQuery,
-} from "@/redux/features/category/categoryApi";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import ConfirmModal from "@/components/ui/ConfirmModal";
