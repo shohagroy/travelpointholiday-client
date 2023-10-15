@@ -49,6 +49,10 @@ const SideBar = () => {
           label: <Link href={`/admin/manage-country`}>Manage Country</Link>,
           key: `/admin/manage-country`,
         },
+        {
+          label: <Link href={`/admin/manage-city`}>Manage City</Link>,
+          key: `/admin/manage-city`,
+        },
       ],
     },
     {

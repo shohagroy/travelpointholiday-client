@@ -7,7 +7,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import CategoryDrawer from "@/components/ui/CategoryDrawer";
+import CategoryDrawer from "@/components/drawer/CategoryDrawer";
 import {
   useDeleteCategoryMutation,
   useGetAllCategoriesQuery,
@@ -28,8 +28,6 @@ const ManageCategoryPage = () => {
   const [open, setOpen] = useState(false);
   const [categoryInfo, setCategoryInfo] = useState({});
   const [modalText, setModalText] = useState({});
-
-  console.log(categoryInfo);
 
   const query = {};
   query["size"] = size;
