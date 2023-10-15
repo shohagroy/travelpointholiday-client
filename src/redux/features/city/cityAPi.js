@@ -20,6 +20,15 @@ export const cityAPi = baseApi.injectEndpoints({
       providesTags: ["cities"],
     }),
 
+    getAllCitiesData: build.query({
+      query: (arg) => ({
+        url: "/cities/get-all",
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: ["cities"],
+    }),
+
     deleteCity: build.mutation({
       query: (id) => ({
         url: `/cities/${id}`,
@@ -44,4 +53,5 @@ export const {
   useGetAllCitiesQuery,
   useDeleteCityMutation,
   useUpdateCityMutation,
+  useGetAllCitiesDataQuery,
 } = cityAPi;

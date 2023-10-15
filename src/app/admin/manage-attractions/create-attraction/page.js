@@ -8,21 +8,22 @@ import FormTimePicker from "@/components/forms/FormTimePicker";
 import Form from "@/components/forms/From";
 import EditTools from "@/components/ui/EditTools";
 import InputImage from "@/components/ui/InputImage";
+import { useCreateAttractionMutation } from "@/redux/features/attraction/attractionApi";
 import { useGetAllCategoryDataQuery } from "@/redux/features/category/categoryApi";
-import { useGetAllCitiesQuery } from "@/redux/features/city/cityAPi";
+import { useGetAllCitiesDataQuery } from "@/redux/features/city/cityAPi";
 import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
 import { attractionSchema } from "@/schemas/attraction";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Card, Col, Flex, Row } from "antd";
+import { Button, Card, Col, Flex, Row, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const CreateAttractionPage = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [images, setImages] = useState([]);
   const [imgPreview, setImgPreview] = useState(false);
   const [description, setDescription] = useState("");
-  const [countryId, setCountryId] = useState("");
 
   // console.log(images);
   const { data: categoryData, isLoading: categoryLoading } =
@@ -31,9 +32,8 @@ const CreateAttractionPage = () => {
   const { data: countryData, isLoading: countryLoading } =
     useGetAllCountryDataQuery();
 
-  const { data: citiesData, isLoading: citiesLoading } = useGetAllCitiesQuery({
-    countryId: countryId,
-  });
+  const { data: citiesData, isLoading: citiesLoading } =
+    useGetAllCitiesDataQuery();
 
   const breadCrumbItems = [
     {
@@ -71,6 +71,8 @@ const CreateAttractionPage = () => {
     };
   });
 
+  const [createAttraction, { isLoading }] = useCreateAttractionMutation();
+
   useEffect(() => {
     if (images.length > 0) {
       setImgPreview(true);
@@ -79,9 +81,25 @@ const CreateAttractionPage = () => {
     }
   }, [images]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const attractionData = { ...data, description, images };
-    console.log(attractionData);
+    const result = await createAttraction(attractionData).unwrap();
+
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Attraction Create Successfully!",
+      });
+      setImgPreview(false);
+      setDescription("");
+      setImages([]);
+    }
   };
 
   return (
@@ -92,6 +110,7 @@ const CreateAttractionPage = () => {
 
       <main>
         <section>
+          {contextHolder}
           <AdminBreadCrumb items={breadCrumbItems} />
 
           <div className="max-w-7xl mx-auto my-6">
@@ -147,7 +166,7 @@ const CreateAttractionPage = () => {
                       <div className="my-4">
                         <FormSelectField
                           name={"countryId"}
-                          handleChange={(e) => setCountryId(e)}
+                          // handleChange={(e) => setCountryId(e)}
                           loading={countryLoading}
                           label={"Country Name"}
                           options={countryOptions}
@@ -176,7 +195,7 @@ const CreateAttractionPage = () => {
                           label={"Ticket Price (Adult)"}
                           name={"price"}
                           required
-                          type={"number"}
+                          type={"text"}
                           size="large"
                         />
                       </div>
@@ -256,12 +275,13 @@ const CreateAttractionPage = () => {
 
                 <Flex justify="center" align="center">
                   <Button
+                    loading={isLoading}
                     htmlType="submit"
                     className="text-center my-6 mx-2"
                     size="large"
                     type="primary"
                   >
-                    Create Attractions
+                    {isLoading ? "Creating..." : "Create Attractions"}
                   </Button>
                 </Flex>
               </Form>

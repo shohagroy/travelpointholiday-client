@@ -16,7 +16,7 @@ const FormDatePicker = ({ name, label, onChange, size = "large" }) => {
 
   const handleOnChange = (date, dateString) => {
     onChange ? onChange(date, dateString) : null;
-    setValue(name, date);
+    setValue(name, new Date(dateString).toISOString());
   };
 
   return (
