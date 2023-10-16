@@ -10,6 +10,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
 import InitialLoading from "@/components/loader/InitialLoading";
 import { useDebounced } from "@/redux/hooks/useDebounced";
+import AttractionLoader from "@/components/skeleton-loader/AttractionLoader";
 
 const AttractionLayout = ({ children }) => {
   const [sortBy, setSortBy] = useState("top-pick");
@@ -90,13 +91,7 @@ const AttractionLayout = ({ children }) => {
               <SortByFilds value={sortBy} setFn={setSortBy} />
 
               <div className="">
-                {isLoading ? (
-                  <div className="flex justify-center items-center h-screen">
-                    <InitialLoading />
-                  </div>
-                ) : (
-                  children
-                )}
+                {isLoading ? <AttractionLoader count={10} /> : children}
               </div>
               {}
               <PaginationOprions meta={data?.meta} />

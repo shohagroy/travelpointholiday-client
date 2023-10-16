@@ -13,6 +13,8 @@ import Link from "next/link";
 const AttractionCard = ({ data }) => {
   const { id, banarTittle, images, price, tittle, duration, city } = data || {};
 
+  console.log(id);
+
   return (
     <Space
       direction="vertical"
@@ -37,7 +39,7 @@ const AttractionCard = ({ data }) => {
 
             <div className="w-full  pl-3">
               <p className="font-bold">{city?.name}</p>
-              <Link href={"/"}>
+              <Link href={`/attractions/${id}`}>
                 <h2 className="text-blue-600">{tittle}</h2>
               </Link>
               <p className="">{banarTittle}</p>

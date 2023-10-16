@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: [],
+  loading: true,
 };
 
 const attractionSlice = createSlice({
@@ -10,6 +11,7 @@ const attractionSlice = createSlice({
   reducers: {
     storeAttractionData: (state, action) => {
       state.data = action.payload;
+      state.loading = false;
     },
   },
 });

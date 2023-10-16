@@ -1,3 +1,5 @@
+"use client";
+
 import BreadCrumb from "@/components/ui/Breadcrumb";
 import ImageGallery from "@/components/ui/ImageGallery";
 import Head from "next/head";
