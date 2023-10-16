@@ -3,11 +3,29 @@
 import { Button, Card, Flex } from "antd";
 import React from "react";
 import CheckBoxFilds from "./CheckBoxFilds";
+import { useGetAllCategoryDataQuery } from "@/redux/features/category/categoryApi";
+import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
+import { useGetAllCitiesDataQuery } from "@/redux/features/city/cityAPi";
 
-const FilterOptions = () => {
+const FilterOptions = ({ setCategoryId, setCountryId, setCityId }) => {
   const filterHandelar = (search) => {
-    console.log(JSON.parse(search));
+    if (search.name === "categoryId" && search.check) {
+      setCategoryId(search.id);
+    } else if (search.name === "countryId" && search.check) {
+      setCountryId(search.id);
+    } else if (search.name === "cityId" && search.check) {
+      setCityId(search.id);
+    }
   };
+
+  const { data: categoryData, isLoading: categoryLoading } =
+    useGetAllCategoryDataQuery();
+
+  const { data: countryData, isLoading: countryLoading } =
+    useGetAllCountryDataQuery();
+
+  const { data: cityData, isLoading: cityLoading } = useGetAllCitiesDataQuery();
+
   return (
     <Card
       title={
@@ -18,9 +36,27 @@ const FilterOptions = () => {
       }
       className="shadow-md mt-4"
     >
-      <CheckBoxFilds onChange={filterHandelar} tittle={"category"} />
-      <CheckBoxFilds onChange={filterHandelar} tittle={"price"} />
-      <CheckBoxFilds onChange={filterHandelar} tittle={"city"} />
+      <CheckBoxFilds
+        onChange={filterHandelar}
+        lebel={"category"}
+        name={"categoryId"}
+        data={categoryData?.data}
+        loading={categoryLoading}
+      />
+      <CheckBoxFilds
+        onChange={filterHandelar}
+        lebel={"country"}
+        name={"countryId"}
+        data={countryData?.data}
+        loading={countryLoading}
+      />
+      <CheckBoxFilds
+        onChange={filterHandelar}
+        lebel={"city"}
+        name={"cityId"}
+        data={cityData?.data}
+        loading={cityLoading}
+      />
     </Card>
   );
 };

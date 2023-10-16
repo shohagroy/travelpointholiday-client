@@ -10,7 +10,9 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 
-const AttractionCard = () => {
+const AttractionCard = ({ data }) => {
+  const { id, banarTittle, images, price, tittle, duration, city } = data || {};
+
   return (
     <Space
       direction="vertical"
@@ -23,28 +25,26 @@ const AttractionCard = () => {
       <Badge.Ribbon text="Hippies" color="#003B95">
         <Card className="shadow-sm hover:shadow-md duration-200">
           <Flex>
-            <div>
+            <div className="w-[400px] h-[200px] bg-gray-200  rounded-md">
               <Image
-                src="https:r-xx.bstatic.com/xdata/images/xphoto/300x320/144059754.jpg?k=8e2414e149019a810c571938bba5a045c7a2f2be710fbe39b0d2e7704155c536&o="
+                preview={false}
+                src={images[0]?.secure_url}
                 alt="image"
-                className="w-[180px] h-full rounded-md"
+                className=" w-full h-[200px]  rounded-md"
+                style={{ objectFit: "fill" }}
               />
             </div>
 
             <div className="w-full  pl-3">
-              <p className="font-bold">Dubai</p>
+              <p className="font-bold">{city?.name}</p>
               <Link href={"/"}>
-                <h2 className="text-blue-600">
-                  Burj Khalifa Admission Tickets: Floors 124 and 125
-                </h2>
+                <h2 className="text-blue-600">{tittle}</h2>
               </Link>
-              <p className="">
-                Gaze over Dubai from the top of the Burj Khalifa
-              </p>
+              <p className="">{banarTittle}</p>
 
               <div className="mt-2">
                 <p className="mr-2 text-gray-600">
-                  <FieldTimeOutlined /> <span>Duration 3 hours 30 minites</span>
+                  <FieldTimeOutlined /> <span>Duration: {duration}</span>
                 </p>
                 <Flex justify="space-between" align="start">
                   <div>
@@ -64,10 +64,10 @@ const AttractionCard = () => {
                   </div>
                   <div>
                     <p className="text-right py-1">
-                      From <strong className="text-2xl">$3445</strong>
+                      From <strong className="text-2xl">${price}</strong>
                     </p>
 
-                    <Link href={"/"}>
+                    <Link href={`/attractions/${id}`}>
                       <Button
                         size="large"
                         type="link"

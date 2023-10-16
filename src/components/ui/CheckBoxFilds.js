@@ -1,30 +1,57 @@
 import { Checkbox } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import FilterLoader from "../skeleton-loader/FilterLoader";
 
-const CheckBoxFilds = ({ tittle, onChange }) => {
+const CheckBoxFilds = ({ lebel, onChange, data, loading, name }) => {
+  const [selectedValue, setSelectedValue] = useState("");
+
   const checkHandelar = (info) => {
-    onChange(info);
+    const data = JSON.parse(info);
+    onChange(data);
+    setSelectedValue(data.id);
   };
+
   return (
     <div className="mb-4 capitalize">
-      <p className="font-bold ">{tittle}</p>
-      {[...Array(10)].map((item, i) => (
-        <div key={i}>
+      {loading ? (
+        <FilterLoader />
+      ) : (
+        <div>
+          <p className="font-bold ">{lebel}</p>
           <Checkbox
             onChange={(e) =>
               checkHandelar(
                 JSON.stringify({
-                  tittle,
+                  name,
                   check: e.target.checked,
-                  id: i,
+                  id: "",
                 })
               )
             }
+            checked={selectedValue === ""}
           >
-            {tittle} - {i + 1}
+            All {lebel}
           </Checkbox>
+          {data.map((item, i) => (
+            <div key={i}>
+              <Checkbox
+                onChange={(e) =>
+                  checkHandelar(
+                    JSON.stringify({
+                      name,
+                      check: e.target.checked,
+                      id: item?.id,
+                    })
+                  )
+                }
+                checked={selectedValue === item?.id}
+              >
+                {item?.name}
+              </Checkbox>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

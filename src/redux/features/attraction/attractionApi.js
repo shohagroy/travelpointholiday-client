@@ -1,4 +1,5 @@
 import { baseApi } from "../baseApi/apiSlice";
+import { storeAttractionData } from "./attractionSlice";
 
 export const attractionApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -26,6 +27,16 @@ export const attractionApi = baseApi.injectEndpoints({
         params: arg,
       }),
       providesTags: ["attractions"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          if (result?.data?.data.length) {
+            return dispatch(storeAttractionData(result?.data?.data));
+          }
+        } catch (err) {
+          console.log(error);
+        }
+      },
     }),
 
     getAttraction: build.query({
