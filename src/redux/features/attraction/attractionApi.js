@@ -44,6 +44,24 @@ export const attractionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["attractions"],
     }),
+
+    removeAttractionImage: build.mutation({
+      query: (data) => ({
+        url: `/attractions/images/${data?.attractionId}`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["attractions"],
+    }),
+
+    uploadAttractionsImage: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/attractions/images/${id}`,
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: ["attractions"],
+    }),
   }),
 });
 
@@ -53,4 +71,6 @@ export const {
   useDeleteAttractionMutation,
   useGetAttractionQuery,
   useUpdateAttractionInfoMutation,
+  useRemoveAttractionImageMutation,
+  useUploadAttractionsImageMutation,
 } = attractionApi;

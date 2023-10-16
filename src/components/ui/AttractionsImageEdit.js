@@ -1,51 +1,63 @@
-import { Button, Card, Col, Flex, Image, Row, message } from "antd";
-import React, { useEffect, useState } from "react";
-import FormDatePicker from "../forms/FormDatePicker";
-import FormTimePicker from "../forms/FormTimePicker";
-import FormInput from "../forms/FormInput";
-import FormSelectField from "../forms/FormSelectField";
-import Form from "@/components/forms/From";
-import { useGetAllCategoryDataQuery } from "@/redux/features/category/categoryApi";
-import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
-import { useGetAllCitiesDataQuery } from "@/redux/features/city/cityAPi";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { attractionSchema } from "@/schemas/attraction";
-import { useUpdateAttractionInfoMutation } from "@/redux/features/attraction/attractionApi";
-import EditTools from "./EditTools";
-import { useRouter } from "next/navigation";
+import { Button, Card, Flex, Image, message } from "antd";
+import React, { useState } from "react";
+import {
+  useRemoveAttractionImageMutation,
+  useUploadAttractionsImageMutation,
+} from "@/redux/features/attraction/attractionApi";
 
 import { CloseOutlined } from "@ant-design/icons";
 import ConfirmModal from "./ConfirmModal";
+import InputImage from "./InputImage";
 
 const AttractionsImageEdit = ({ images }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [removeImageInfo, setRemoveImageInfo] = useState({});
+  const [uploadNew, setUploadNew] = useState(false);
+  const [newImages, setNewImages] = useState([]);
+  const [previews, setPreviews] = useState(false);
 
-  console.log(images);
+  const [removeAttractionImage, { isLoading }] =
+    useRemoveAttractionImageMutation();
 
-  const onSubmit = async (data) => {
-    // const result = await updateAttractionInfo({
-    //   ...data,
-    //   description,
-    // }).unwrap();
-    // if (result?.errorMessages) {
-    //   messageApi.open({
-    //     type: "error",
-    //     content: result.errorMessages || "Something went wrong!",
-    //   });
-    // }
-    // if (result?.data?.id) {
-    //   messageApi.open({
-    //     type: "success",
-    //     content: "Attraction update Successfully!",
-    //   });
-    //   router.push("/admin/manage-attractions");
-    // }
+  const [uploadAttractionsImage, { isLoading: postLoading }] =
+    useUploadAttractionsImageMutation();
+
+  const removeImage = async () => {
+    const result = await removeAttractionImage(removeImageInfo).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Attraction Image remove Successfully!",
+      });
+    }
+    setIsModalOpen(false);
   };
 
-  const removeImage = () => {
-    console.log(removeImageInfo);
+  const newImageUploadHandelar = async () => {
+    const result = await uploadAttractionsImage({
+      id: images[0].attractionId,
+      data: newImages,
+    }).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Attraction Image Added Successfully!",
+      });
+    }
+    setUploadNew(false);
   };
 
   return (
@@ -59,11 +71,11 @@ const AttractionsImageEdit = ({ images }) => {
           </div>
         }
       >
-        <Row gutter={16}>
-          <div className="flex gap-1">
-            {images?.map((image) => (
-              <Col key={image?._id} span={6}>
-                <div className="relative">
+        {!uploadNew ? (
+          <>
+            <div className="grid grid-cols-5 gap-4">
+              {images?.map((image) => (
+                <div key={image?.id} className="relative">
                   <Button
                     onClick={() => {
                       setRemoveImageInfo(image);
@@ -81,18 +93,42 @@ const AttractionsImageEdit = ({ images }) => {
                     preview={false}
                   />
                 </div>
-              </Col>
-            ))}
-          </div>
-        </Row>
+              ))}
+            </div>
+          </>
+        ) : (
+          <InputImage
+            imgPreview={previews}
+            setImages={setNewImages}
+            setPreviews={setPreviews}
+          />
+        )}
 
         <Flex className="justify-center mt-4">
-          <Button type="primary">Upload New</Button>
+          <Button
+            className="mx-2"
+            onClick={() => setUploadNew(!uploadNew)}
+            type="primary"
+            danger={uploadNew}
+          >
+            {uploadNew ? "Cancel" : " Upload New"}
+          </Button>
+
+          {uploadNew && (
+            <Button
+              loading={postLoading}
+              className="mx-2"
+              onClick={newImageUploadHandelar}
+              type="primary"
+            >
+              {postLoading ? "Uploading..." : "Upload"}
+            </Button>
+          )}
         </Flex>
       </Card>
 
       <ConfirmModal
-        loading={false}
+        loading={isLoading}
         setOpen={setIsModalOpen}
         open={isModalOpen}
         submitFn={removeImage}
