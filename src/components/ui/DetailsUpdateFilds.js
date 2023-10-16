@@ -14,15 +14,15 @@ const DetailsUpdateFilds = ({ name, value, label }) => {
   const genderOptions = [
     {
       label: "Male",
-      value: "male",
+      value: "Male",
     },
     {
       label: "Female",
-      value: "female",
+      value: "Female",
     },
     {
       label: "Others",
-      value: "others",
+      value: "Others",
     },
   ];
 

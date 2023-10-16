@@ -7,21 +7,19 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import CategoryDrawer from "@/components/drawer/CategoryDrawer";
-import {
-  useDeleteCategoryMutation,
-  useGetAllCategoryDataQuery,
-} from "@/redux/features/category/categoryApi";
+import { useGetAllCategoryDataQuery } from "@/redux/features/category/categoryApi";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
+import {
+  useDeleteAttractionMutation,
+  useGetAllAttractionsQuery,
+} from "@/redux/features/attraction/attractionApi";
 import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
 import { useGetAllCitiesDataQuery } from "@/redux/features/city/cityAPi";
 
 const ManageAttractions = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [isEditable, setIsEditable] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
@@ -32,7 +30,7 @@ const ManageAttractions = () => {
   const [categoryId, setCategoryId] = useState("");
 
   const [open, setOpen] = useState(false);
-  const [categoryInfo, setCategoryInfo] = useState({});
+  const [attractionInfo, setAttractionInfo] = useState({});
   const [modalText, setModalText] = useState({});
 
   const query = {};
@@ -104,12 +102,12 @@ const ManageAttractions = () => {
     }) || [];
   const meta = data?.meta || {};
 
-  const [deleteCategory, { isLoading: deleteLoading }] =
-    useDeleteCategoryMutation();
+  const [deleteAttraction, { isLoading: deleteLoading }] =
+    useDeleteAttractionMutation();
 
   const itemDeleteHandelar = async () => {
-    console.log("delete", categoryInfo);
-    const result = await deleteCategory(categoryInfo?.key).unwrap();
+    console.log("delete", attractionInfo);
+    const result = await deleteAttraction(attractionInfo?.key).unwrap();
     if (result?.errorMessages) {
       messageApi.open({
         type: "error",
@@ -119,30 +117,25 @@ const ManageAttractions = () => {
     if (result?.data?.id) {
       messageApi.open({
         type: "success",
-        content: "Category Delete Successfully!",
+        content: "Attraction Delete Successfully!",
       });
       setOpen(false);
     }
   };
 
   const openModalHandelar = (data) => {
-    setCategoryInfo(data);
+    setAttractionInfo(data);
     setModalText({
-      tittle: "Are your sure Delete this Category?",
+      tittle: "Are your sure Delete this Attraction?",
       details: (
         <div>
           <p>
-            Name: <span className="text-xl font-bold">{data?.name}</span>
+            Name: <span className="semibold">{data?.tittle}</span>
           </p>
         </div>
       ),
     });
     setOpen(true);
-  };
-
-  const handelCategoryUpdate = (data) => {
-    setCategoryInfo(data);
-    setIsEditable(true);
   };
 
   const columns = [
@@ -193,15 +186,16 @@ const ManageAttractions = () => {
       render: function (data) {
         return (
           <>
-            <Button
-              style={{
-                margin: "0px 5px",
-              }}
-              onClick={() => handelCategoryUpdate(data)}
-              type="primary"
-            >
-              <EditOutlined />
-            </Button>
+            <Link href={`../admin/manage-attractions/edit/${data?.key}`}>
+              <Button
+                style={{
+                  margin: "0px 5px",
+                }}
+                type="primary"
+              >
+                <EditOutlined />
+              </Button>
+            </Link>
             <Button
               onClick={() => openModalHandelar(data)}
               type="primary"
@@ -341,12 +335,6 @@ const ManageAttractions = () => {
           </div>
         </section>
 
-        <CategoryDrawer
-          open={isEditable}
-          setOpen={setIsEditable}
-          valueObj={categoryInfo}
-          valueFn={setCategoryInfo}
-        />
         <ConfirmModal
           submitFn={itemDeleteHandelar}
           setOpen={setOpen}

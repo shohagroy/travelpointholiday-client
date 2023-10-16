@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import React, { useState } from "react";
+import React from "react";
 
 const ConfirmModal = ({ setOpen, open, loading, submitFn, modalText }) => {
   //   const [modalText, setModalText] = useState("Content of the modal");

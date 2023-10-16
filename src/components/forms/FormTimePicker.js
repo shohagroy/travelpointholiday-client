@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import dayjs from "dayjs";
 import { getErrorMessageByPropertyName } from "@/utils/schema-validator";
 
-export default function FormTimePicker({ name, label }) {
+export default function FormTimePicker({ name, label, disabled }) {
   const {
     control,
     formState: { errors },
@@ -20,6 +20,7 @@ export default function FormTimePicker({ name, label }) {
         control={control}
         render={({ field }) => (
           <TimePicker
+            disabled={disabled}
             size="large"
             defaultValue={dayjs(field.value ? field.value : "00:00", "HH:mm")}
             format={"HH:mm"}

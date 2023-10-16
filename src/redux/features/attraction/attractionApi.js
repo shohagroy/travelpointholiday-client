@@ -11,6 +11,14 @@ export const attractionApi = baseApi.injectEndpoints({
       invalidatesTags: ["attractions"],
     }),
 
+    deleteAttraction: build.mutation({
+      query: (id) => ({
+        url: `/attractions/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["attractions"],
+    }),
+
     getAllAttractions: build.query({
       query: (arg) => ({
         url: "/attractions",
@@ -19,8 +27,30 @@ export const attractionApi = baseApi.injectEndpoints({
       }),
       providesTags: ["attractions"],
     }),
+
+    getAttraction: build.query({
+      query: (id) => ({
+        url: `/attractions/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["attractions"],
+    }),
+
+    updateAttractionInfo: build.mutation({
+      query: (data) => ({
+        url: `/attractions/edit-info/${data?.id}`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["attractions"],
+    }),
   }),
 });
 
-export const { useCreateAttractionMutation, useGetAllAttractionsQuery } =
-  attractionApi;
+export const {
+  useCreateAttractionMutation,
+  useGetAllAttractionsQuery,
+  useDeleteAttractionMutation,
+  useGetAttractionQuery,
+  useUpdateAttractionInfoMutation,
+} = attractionApi;
