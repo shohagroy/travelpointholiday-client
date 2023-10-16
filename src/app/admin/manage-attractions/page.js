@@ -2,7 +2,7 @@
 
 import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Button, Col, Input, Modal, Row, message } from "antd";
+import { Button, Col, Image, Input, Row, Select, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -10,11 +10,14 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CategoryDrawer from "@/components/drawer/CategoryDrawer";
 import {
   useDeleteCategoryMutation,
-  useGetAllCategoriesQuery,
+  useGetAllCategoryDataQuery,
 } from "@/redux/features/category/categoryApi";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import ConfirmModal from "@/components/ui/ConfirmModal";
+import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
+import { useGetAllCountryDataQuery } from "@/redux/features/country/countryApi";
+import { useGetAllCitiesDataQuery } from "@/redux/features/city/cityAPi";
 
 const ManageAttractions = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -24,6 +27,9 @@ const ManageAttractions = () => {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [countryId, setCountryId] = useState("");
+  const [cityId, setCityId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
 
   const [open, setOpen] = useState(false);
   const [categoryInfo, setCategoryInfo] = useState({});
@@ -35,6 +41,16 @@ const ManageAttractions = () => {
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
 
+  if (countryId) {
+    query["countryId"] = countryId;
+  }
+  if (cityId) {
+    query["cityId"] = cityId;
+  }
+  if (categoryId) {
+    query["categoryId"] = categoryId;
+  }
+
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
     delay: 600,
@@ -44,15 +60,48 @@ const ManageAttractions = () => {
     query["search"] = debouncedTerm;
   }
 
-  const { data, isLoading } = useGetAllCategoriesQuery({ ...query });
-  const categoriesData = data?.data.map((item, i) => {
-    return {
-      key: item?.id,
-      sl: page * size - size + i + 1,
-      name: item?.name,
-      createdAt: item?.createdAt,
-    };
-  });
+  const { data: countries, isLoading: countryLoading } =
+    useGetAllCountryDataQuery();
+  const countryOptions =
+    countries?.data?.map((item) => {
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    }) || [];
+
+  const { data: cities, isLoading: cityLoading } = useGetAllCitiesDataQuery();
+  const cityOptions =
+    cities?.data?.map((item) => {
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    }) || [];
+
+  const { data: categories, isLoading: categoryLoading } =
+    useGetAllCategoryDataQuery();
+  const categoryOptions =
+    categories?.data?.map((item) => {
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    }) || [];
+
+  const { data, isLoading } = useGetAllAttractionsQuery({ ...query });
+  const attractionsData =
+    data?.data.map((item, i) => {
+      return {
+        key: item?.id,
+        banar: <Image alt="banar" src={item?.images[0]?.secure_url} />,
+        tittle: <Link href={`/attractions/${item?.id}`}>{item?.tittle}</Link>,
+        category: item?.category?.name,
+        city: item?.city?.name,
+        country: item?.country?.name,
+        createdAt: item?.createdAt,
+      };
+    }) || [];
   const meta = data?.meta || {};
 
   const [deleteCategory, { isLoading: deleteLoading }] =
@@ -98,21 +147,39 @@ const ManageAttractions = () => {
 
   const columns = [
     {
-      title: <p>SL No</p>,
-      width: 100,
+      title: <p>Banar</p>,
+      dataIndex: "banar",
+      width: 200,
       align: "center",
-      dataIndex: "sl",
     },
     {
-      title: <p>Name</p>,
-      dataIndex: "name",
+      title: <p>Tittle</p>,
+      dataIndex: "tittle",
       width: 300,
+      align: "center",
+    },
+    {
+      title: <p>Category</p>,
+      dataIndex: "category",
+      width: 150,
+      align: "center",
+    },
+    {
+      title: <p>Country</p>,
+      dataIndex: "country",
+      width: 100,
+      align: "center",
+    },
+    {
+      title: <p>City</p>,
+      dataIndex: "city",
+      width: 150,
       align: "center",
     },
     {
       title: <p>CreatedAt</p>,
       dataIndex: "createdAt",
-      width: 250, // Set the width here
+      width: 200, // Set the width here
       align: "center",
       render: function (data) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
@@ -121,7 +188,7 @@ const ManageAttractions = () => {
     },
     {
       title: <p>Action</p>,
-      width: 100, // Set the width here
+      width: 150, // Set the width here
       align: "center",
       render: function (data) {
         return (
@@ -186,17 +253,71 @@ const ManageAttractions = () => {
 
           <div className="max-w-7xl mx-auto my-4">
             <div className="mt-10">
-              <Row gutter={16}>
-                <Col span={16}>
+              <Row gutter={10}>
+                <Col span={6}>
                   <Input
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search..."
-                    className="p-3 text-xl"
+                    className="p-2"
                   />
                 </Col>
-                <Col span={8}>
+
+                <Col span={5}>
+                  <Select
+                    loading={categoryLoading}
+                    onChange={(e) => setCategoryId(e)}
+                    size={"large"}
+                    options={[
+                      {
+                        label: "All",
+                        value: "",
+                      },
+                      ...categoryOptions,
+                    ]}
+                    style={{ width: "100%", height: "100%" }}
+                    placeholder={"Search by Category"}
+                  />
+                </Col>
+
+                <Col span={5}>
+                  <Select
+                    loading={countryLoading}
+                    onChange={(e) => setCountryId(e)}
+                    size={"large"}
+                    options={[
+                      {
+                        label: "All",
+                        value: "",
+                      },
+                      ...countryOptions,
+                    ]}
+                    // value={countryId}
+                    style={{ width: "100%", height: "100%" }}
+                    placeholder={"Search by Country"}
+                  />
+                </Col>
+
+                <Col span={5}>
+                  <Select
+                    loading={cityLoading}
+                    onChange={(e) => setCityId(e)}
+                    size={"large"}
+                    options={[
+                      {
+                        label: "All",
+                        value: "",
+                      },
+                      ...cityOptions,
+                    ]}
+                    // value={countryId}
+                    style={{ width: "100%", height: "100%" }}
+                    placeholder={"Search by City"}
+                  />
+                </Col>
+
+                <Col span={3}>
                   <Link href={"/admin/manage-attractions/create-attraction"}>
-                    <Button className="w-full h-full text-xl " type="primary">
+                    <Button className="w-full h-full  " type="primary">
                       Create Attraction +
                     </Button>
                   </Link>
@@ -208,7 +329,7 @@ const ManageAttractions = () => {
               <DisplayTable
                 loading={isLoading}
                 columns={columns}
-                dataSource={categoriesData}
+                dataSource={attractionsData}
                 pageSize={size}
                 totalPages={meta?.total}
                 showSizeChanger={true}

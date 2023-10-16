@@ -10,7 +10,17 @@ export const attractionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["attractions"],
     }),
+
+    getAllAttractions: build.query({
+      query: (arg) => ({
+        url: "/attractions",
+        method: "GET",
+        params: arg,
+      }),
+      providesTags: ["attractions"],
+    }),
   }),
 });
 
-export const { useCreateAttractionMutation } = attractionApi;
+export const { useCreateAttractionMutation, useGetAllAttractionsQuery } =
+  attractionApi;

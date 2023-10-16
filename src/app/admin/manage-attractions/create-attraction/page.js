@@ -17,6 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Col, Flex, Row, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const CreateAttractionPage = () => {
@@ -24,6 +25,8 @@ const CreateAttractionPage = () => {
   const [images, setImages] = useState([]);
   const [imgPreview, setImgPreview] = useState(false);
   const [description, setDescription] = useState("");
+
+  const router = useRouter();
 
   // console.log(images);
   const { data: categoryData, isLoading: categoryLoading } =
@@ -99,6 +102,7 @@ const CreateAttractionPage = () => {
       setImgPreview(false);
       setDescription("");
       setImages([]);
+      router.push("/admin/manage-attractions");
     }
   };
 
