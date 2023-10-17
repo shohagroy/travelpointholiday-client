@@ -1,50 +1,44 @@
 "use client";
 
-import DisplayTable from "@/components/table/DisplayTable";
-import ConfirmModal from "@/components/ui/ConfirmModal";
-import {
-  useGetAllBookingListQuery,
-  useRefundCancelMutation,
-  useRefundConfirmMutation,
-} from "@/redux/features/booking/bookingApi";
-import { Button, Image, message } from "antd";
-import Head from "next/head";
-import Link from "next/link";
 import React, { useState } from "react";
-import dayjs from "dayjs";
-import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 
-const CancelListPage = () => {
+import ConfirmModal from "@/components/ui/ConfirmModal";
+import DisplayTable from "@/components/table/DisplayTable";
+import { Button, Image, message } from "antd";
+import Link from "next/link";
+import Head from "next/head";
+import BreadcrumbBanar from "@/components/ui/BreadcrumbBanar";
+import dayjs from "dayjs";
+import {
+  useCancelBookingMutation,
+  useGetUserBookingListQuery,
+} from "@/redux/features/booking/bookingApi";
+
+const TripManagePage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  const query = { cancel: "cancel" };
+  const query = {};
 
   query["page"] = page;
   query["size"] = size;
   query["size"] = size;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
+  const { data, isLoading } = useGetUserBookingListQuery({ ...query });
 
   const [open, setOpen] = useState(false);
-  // const [open, setOpen] = useState(false);
-
   const [attractionInfo, setAttractionInfo] = useState({});
   const [modalText, setModalText] = useState({});
 
-  const { data, isLoading } = useGetAllBookingListQuery({ ...query });
-
-  const [refundConfirm, { isLoading: refundConfirmLoading }] =
-    useRefundConfirmMutation();
-
-  const [refundCancel, { isLoading: refundCancelLoading }] =
-    useRefundCancelMutation();
+  const [cancelBooking, { isLoading: cancelLoading }] =
+    useCancelBookingMutation();
 
   const attractionsData =
-    data?.data?.data?.map((item) => {
+    data?.data.map((item) => {
       return {
         key: item?.id,
         banar: (
@@ -56,42 +50,21 @@ const CancelListPage = () => {
           </Link>
         ),
         total_ticket: item?.totalTicket,
-        user: item?.userInfo?.name,
-        return: item?.payment,
+        ticket_price: item?.payment / item?.totalTicket,
+        total_payment: item?.payment,
         createdAt: item?.createdAt,
         status: item?.status,
       };
     }) || [];
   const meta = data?.meta || {};
 
-  const refundSubmitHandelar = async () => {
-    const refundData = {
-      id: attractionInfo?.key,
-    };
-
-    const result = await refundConfirm(refundData).unwrap();
-    if (result?.errorMessages) {
-      messageApi.open({
-        type: "error",
-        content: result.errorMessages || "Something went wrong!",
-      });
-    }
-    if (result?.data?.id) {
-      messageApi.open({
-        type: "success",
-        content: "Booking Refund Successfully!",
-      });
-      setOpen(false);
-    }
-  };
-
-  const refundCancelHandelar = async () => {
-    const refundData = {
+  const attractionCancelHandelar = async () => {
+    const cancelData = {
       id: attractionInfo?.key,
       totalTicket: attractionInfo?.total_ticket,
     };
 
-    const result = await refundCancel(refundData).unwrap();
+    const result = await cancelBooking(cancelData).unwrap();
     if (result?.errorMessages) {
       messageApi.open({
         type: "error",
@@ -101,43 +74,28 @@ const CancelListPage = () => {
     if (result?.data?.id) {
       messageApi.open({
         type: "success",
-        content: "Refund Cancel Successfully!",
+        content: "Attraction Cancel Successfully!",
       });
       setOpen(false);
     }
   };
 
-  const refundModalHandelar = (data) => {
+  const openModalHandelar = (data) => {
     setAttractionInfo(data);
     setModalText({
-      tittle: <p className="">Are your sure Refund this cancel Booking?</p>,
+      tittle: <p className="">Are your sure Cancel This Booking?</p>,
       details: (
-        <>
+        <div>
+          <p>
+            Refund amount add to your payment account after 4-5 working days.
+          </p>
           <p className="text-red-600 font-bold">
             Total Ticket: {data?.total_ticket}
           </p>
           <p className="text-red-600 font-bold">
-            Return Amount: ${data?.return}
+            Refund Amount: ${data?.total_payment}
           </p>
-        </>
-      ),
-    });
-    setOpen(true);
-  };
-
-  const cancelRefundModalHandelar = (data) => {
-    setAttractionInfo(data);
-    setModalText({
-      tittle: <p className="">Are your sure Cancel This Refund?</p>,
-      details: (
-        <>
-          <p className="text-red-600 font-bold">
-            Total Ticket: {data?.total_ticket}
-          </p>
-          <p className="text-red-600 font-bold">
-            Return Amount: ${data?.return}
-          </p>
-        </>
+        </div>
       ),
     });
     setOpen(true);
@@ -163,21 +121,21 @@ const CancelListPage = () => {
       align: "center",
     },
     {
-      title: <p>Return Price</p>,
-      dataIndex: "return",
+      title: <p>Ticket Price</p>,
+      dataIndex: "ticket_price",
       width: 150,
       align: "center",
     },
     {
-      title: <p>User Name</p>,
-      dataIndex: "user",
-      width: 200,
+      title: <p>Total Payment</p>,
+      dataIndex: "total_payment",
+      width: 150,
       align: "center",
     },
     {
       title: <p>CreatedAt</p>,
       dataIndex: "createdAt",
-      width: 200,
+      width: 200, // Set the width here
       align: "center",
       render: function (data) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
@@ -191,23 +149,20 @@ const CancelListPage = () => {
       render: function (data) {
         return (
           <>
-            <Button
-              onClick={() => refundModalHandelar({ ...data, click: "refund" })}
-              className="m-1"
-              type="primary"
-            >
-              Refund
-            </Button>
-            <Button
-              onClick={() =>
-                cancelRefundModalHandelar({ ...data, click: "cancel" })
-              }
-              className="m-1"
-              type="primary"
-              danger
-            >
-              Cancel
-            </Button>
+            {data?.status === "cancel" ? (
+              <Button type="default" disabled danger>
+                Already Cancel
+              </Button>
+            ) : (
+              <Button
+                onClick={() => openModalHandelar(data)}
+                type="primary"
+                danger
+              >
+                Cancel
+                {/* <DeleteOutlined /> */}
+              </Button>
+            )}
           </>
         );
       },
@@ -224,29 +179,19 @@ const CancelListPage = () => {
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
 
-  const breadCrumbItems = [
-    {
-      label: <Link href={"/admin"}>Admin</Link>,
-      link: "/admin",
-    },
-    {
-      label: "Manage Attractions",
-      link: "/admin/manage-attractions",
-    },
-    {
-      label: "Cancel List",
-      link: "/admin/manage-attractions/cancel-list",
-    },
-  ];
-
   return (
     <>
       <Head>
-        <title>Travel Point | Attraction | Cancel List</title>
+        <title>Travel Point | Manage Trip</title>
       </Head>
       <main>
         {contextHolder}
-        <AdminBreadCrumb items={breadCrumbItems} />
+        <BreadcrumbBanar
+          name={"Attractions"}
+          tittle={"My Attractions"}
+          breadItems={[{ title: "My Attractions" }]}
+        />
+
         <section>
           <div className="max-w-7xl mx-auto my-4">
             <div className="my-10">
@@ -266,14 +211,10 @@ const CancelListPage = () => {
         </section>
 
         <ConfirmModal
-          submitFn={
-            attractionInfo?.click === "cancel"
-              ? refundCancelHandelar
-              : refundSubmitHandelar
-          }
+          submitFn={attractionCancelHandelar}
           setOpen={setOpen}
           open={open}
-          loading={refundConfirmLoading || refundCancelLoading}
+          loading={cancelLoading}
           modalText={modalText}
         />
       </main>
@@ -281,4 +222,4 @@ const CancelListPage = () => {
   );
 };
 
-export default CancelListPage;
+export default TripManagePage;

@@ -96,7 +96,7 @@ const ManageAttractions = () => {
         tittle: <Link href={`/attractions/${item?.id}`}>{item?.tittle}</Link>,
         category: item?.category?.name,
         city: item?.city?.name,
-        country: item?.country?.name,
+        status: `${item?.bookingSeat}/${item?.bookingSeat + item?.totalSeat}`,
         createdAt: item?.createdAt,
       };
     }) || [];
@@ -106,7 +106,7 @@ const ManageAttractions = () => {
     useDeleteAttractionMutation();
 
   const itemDeleteHandelar = async () => {
-    console.log("delete", attractionInfo);
+    // console.log("delete", attractionInfo);
     const result = await deleteAttraction(attractionInfo?.key).unwrap();
     if (result?.errorMessages) {
       messageApi.open({
@@ -158,8 +158,8 @@ const ManageAttractions = () => {
       align: "center",
     },
     {
-      title: <p>Country</p>,
-      dataIndex: "country",
+      title: <p>Solt Status</p>,
+      dataIndex: "status",
       width: 100,
       align: "center",
     },

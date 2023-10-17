@@ -12,6 +12,7 @@ const FormInput = ({
   id,
   placeholder,
   validation,
+  disabled,
   label,
   required,
 }) => {
@@ -48,6 +49,7 @@ const FormInput = ({
             />
           ) : (
             <Input
+              disabled={disabled}
               type={type}
               size={size}
               placeholder={placeholder}

@@ -86,7 +86,7 @@ const Navigation = () => {
         {
           key: "2",
           label: (
-            <Link href="/manage-account">
+            <Link href="/trip-management">
               <Button
                 icon={<SlackOutlined />}
                 type="link"

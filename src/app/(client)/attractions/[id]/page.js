@@ -16,13 +16,14 @@ import AttractionReview from "@/components/ui/AttractionReview";
 import FAQ from "@/components/ui/FAQ";
 import LeaveFeedback from "@/components/ui/LeaveFeedback";
 import { useGetAttractionQuery } from "@/redux/features/attraction/attractionApi";
+import TicketPriceSection from "@/components/ui/TicketPriceSection";
 
 const AttractionDetails = ({ params }) => {
   const { id } = params;
 
   const { data, isLoading } = useGetAttractionQuery(id);
 
-  const { tittle, banarTittle, images, price, duration, city, description } =
+  const { tittle, banarTittle, images, description, country } =
     data?.data || {};
 
   console.log(data?.data);
@@ -79,21 +80,8 @@ const AttractionDetails = ({ params }) => {
                 </div>
 
                 <div className="text-lg mt-4">
+                  <p className="font-bold text-gray-500">{country?.name}</p>
                   <div dangerouslySetInnerHTML={{ __html: description }} />
-                  {/* <p>
-                    On this river cruise in Dubai, you’ll be able to enjoy a
-                    buffet of local and international dishes onboard a
-                    traditional dhow boat.
-                  </p>
-                  <br />
-
-                  <p>
-                    You’ll sail along the Deira Creek, which is known for being
-                    less crowded than the more famous Dubai Creek. As you
-                    navigate this waterway through the city, you’ll watch a
-                    traditional tanoura dance performance while gaining insights
-                    into the local culture and heritage.
-                  </p> */}
                 </div>
 
                 {/* review section  */}
@@ -106,32 +94,9 @@ const AttractionDetails = ({ params }) => {
                 <LeaveFeedback />
               </Col>
 
-              <Col span={8}>
-                <div>
-                  <Flex>
-                    <p className="text-yellow-500 mr-2">
-                      <StarFilled />
-                    </p>
-                    <p>
-                      <strong>4.4/5</strong> (1343 reviews)
-                    </p>
-                  </Flex>
-                  <Flex className="text-green-600 text-xl">
-                    <p className=" mr-2 ">
-                      <CalendarOutlined />
-                    </p>
-                    <p>
-                      <strong>Free cancellation available</strong>
-                    </p>
-                  </Flex>
-                </div>
-
-                <div>
-                  <p>
-                    On this river cruise in Dubai, you’ll be able to enjoy a
-                    buffet of local and international dishes onboard a
-                    traditional dhow boat.
-                  </p>
+              <Col span={8} className="relative">
+                <div className="sticky top-4 z-50">
+                  <TicketPriceSection data={data?.data} />
                 </div>
               </Col>
             </Row>
