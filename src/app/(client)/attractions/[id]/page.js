@@ -11,21 +11,30 @@ import {
   RightOutlined,
   FieldTimeOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Flex, Row } from "antd";
+import { Button, Col, Descriptions, Flex, Row } from "antd";
 import AttractionReview from "@/components/ui/AttractionReview";
 import FAQ from "@/components/ui/FAQ";
 import LeaveFeedback from "@/components/ui/LeaveFeedback";
+import { useGetAttractionQuery } from "@/redux/features/attraction/attractionApi";
 
 const AttractionDetails = ({ params }) => {
   const { id } = params;
-  console.log(id);
+
+  const { data, isLoading } = useGetAttractionQuery(id);
+
+  const { tittle, banarTittle, images, price, duration, city, description } =
+    data?.data || {};
+
+  console.log(data?.data);
+
+  console.log(tittle);
 
   const breadItems = [
     {
       title: <Link href={"/attractions"}>Attractions</Link>,
     },
     {
-      title: "Burj Khalifa Admission Tickets: Floors 124 and 125",
+      title: tittle,
     },
   ];
 
@@ -38,12 +47,12 @@ const AttractionDetails = ({ params }) => {
         <BreadCrumb breadItems={breadItems} />
         <section className="max-w-7xl mx-auto p-2">
           <div>
-            <h1>Burj Khalifa Admission Tickets: Floors 124 and 125</h1>
-            <p>Gaze over Dubai from the top of the Burj Khalifa</p>
+            <h1>{tittle}</h1>
+            <p>{banarTittle}</p>
           </div>
 
           <div className="my-4">
-            <ImageGallery />
+            <ImageGallery images={images} />
           </div>
 
           {/* details section  */}
@@ -70,7 +79,8 @@ const AttractionDetails = ({ params }) => {
                 </div>
 
                 <div className="text-lg mt-4">
-                  <p>
+                  <div dangerouslySetInnerHTML={{ __html: description }} />
+                  {/* <p>
                     On this river cruise in Dubai, you’ll be able to enjoy a
                     buffet of local and international dishes onboard a
                     traditional dhow boat.
@@ -83,7 +93,7 @@ const AttractionDetails = ({ params }) => {
                     navigate this waterway through the city, you’ll watch a
                     traditional tanoura dance performance while gaining insights
                     into the local culture and heritage.
-                  </p>
+                  </p> */}
                 </div>
 
                 {/* review section  */}
