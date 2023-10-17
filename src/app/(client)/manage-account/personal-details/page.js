@@ -15,6 +15,7 @@ import {
   useGetUserProfileQuery,
 } from "@/redux/features/user/userApi";
 import InitialLoading from "@/components/loader/InitialLoading";
+import AvatarUpdate from "@/components/ui/AvatarUpdate";
 
 const PersonalDetailsPage = () => {
   const { data, isLoading } = useGetUserProfileQuery();
@@ -81,11 +82,7 @@ const PersonalDetailsPage = () => {
                   </p>
                 </div>
                 <div>
-                  <Avatar
-                    className="cursor-pointer"
-                    size="large"
-                    icon={<UserOutlined />}
-                  />
+                  <AvatarUpdate avatar={profileImg} />
                 </div>
               </Flex>
             }

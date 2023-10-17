@@ -61,6 +61,7 @@ const DetailsUpdateFilds = ({ name, value, label }) => {
             <Form submitHandler={onSubmit} defaultValues={{ [name]: value }}>
               {name === "gender" ? (
                 <FormSelectField
+                  disabled={false}
                   name={name}
                   label={label}
                   options={genderOptions}

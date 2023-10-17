@@ -31,7 +31,7 @@ const FormSelectField = ({
         name={name}
         render={({ field: { value, onChange } }) => (
           <Select
-            disabled
+            disabled={disabled}
             loading={loading}
             onChange={handleChange ? handleChange : onChange}
             size={size}

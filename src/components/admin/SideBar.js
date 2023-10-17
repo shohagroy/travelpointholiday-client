@@ -72,7 +72,7 @@ const SideBar = () => {
       icon: <UserSwitchOutlined />,
     },
     {
-      label: "Manage Users",
+      label: <Link href={`/admin/manage-users`}>Manage Users</Link>,
       key: "Manage Users",
       icon: <UsergroupDeleteOutlined />,
     },
