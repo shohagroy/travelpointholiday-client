@@ -54,6 +54,15 @@ export const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["booking", "attractions"],
     }),
+
+    cancelAndRefund: build.mutation({
+      query: (data) => ({
+        url: "/booking/cancel-and-refund",
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["booking", "attractions"],
+    }),
   }),
 });
 
@@ -64,4 +73,5 @@ export const {
   useCancelBookingMutation,
   useRefundConfirmMutation,
   useRefundCancelMutation,
+  useCancelAndRefundMutation,
 } = bookingApi;

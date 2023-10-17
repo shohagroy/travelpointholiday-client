@@ -1,44 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
-
-import ConfirmModal from "@/components/ui/ConfirmModal";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Button, Image, message } from "antd";
-import Link from "next/link";
-import Head from "next/head";
-import BreadcrumbBanar from "@/components/ui/BreadcrumbBanar";
-import dayjs from "dayjs";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import {
-  useCancelBookingMutation,
-  useGetUserBookingListQuery,
+  useCancelAndRefundMutation,
+  useGetAllBookingListQuery,
 } from "@/redux/features/booking/bookingApi";
+import { Button, Image, message } from "antd";
+import Head from "next/head";
+import Link from "next/link";
+import React, { useState } from "react";
+import dayjs from "dayjs";
+import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 
-const TripManagePage = () => {
+const BookingListPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  const query = {};
+  const query = { booked: "booked" };
 
   query["page"] = page;
   query["size"] = size;
   query["size"] = size;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
-  const { data, isLoading } = useGetUserBookingListQuery({ ...query });
 
   const [open, setOpen] = useState(false);
+
   const [attractionInfo, setAttractionInfo] = useState({});
   const [modalText, setModalText] = useState({});
 
-  const [cancelBooking, { isLoading: cancelLoading }] =
-    useCancelBookingMutation();
+  const { data, isLoading } = useGetAllBookingListQuery({ ...query });
+
+  const [candAndRefund, { isLoading: refundConfirmLoading }] =
+    useCancelAndRefundMutation();
 
   const attractionsData =
-    data?.data.map((item) => {
+    data?.data?.data?.map((item) => {
       return {
         key: item?.id,
         banar: (
@@ -50,22 +51,22 @@ const TripManagePage = () => {
           </Link>
         ),
         total_ticket: item?.totalTicket,
-        ticket_price: item?.payment / item?.totalTicket,
-        total_payment: item?.payment,
+        user: item?.userInfo?.name,
+        return: item?.payment,
         createdAt: item?.createdAt,
         status: item?.status,
-        refundStatus: item?.refundStatus,
+        totalTicket: item?.totalTicket,
       };
     }) || [];
   const meta = data?.meta || {};
 
-  const attractionCancelHandelar = async () => {
-    const cancelData = {
+  const refundSubmitHandelar = async () => {
+    const refundData = {
       id: attractionInfo?.key,
-      totalTicket: attractionInfo?.total_ticket,
+      totalTicket: attractionInfo?.totalTicket,
     };
 
-    const result = await cancelBooking(cancelData).unwrap();
+    const result = await candAndRefund(refundData).unwrap();
     if (result?.errorMessages) {
       messageApi.open({
         type: "error",
@@ -75,28 +76,27 @@ const TripManagePage = () => {
     if (result?.data?.id) {
       messageApi.open({
         type: "success",
-        content: "Attraction Cancel Successfully!",
+        content: "Booking cancel and Refund Successfully!",
       });
       setOpen(false);
     }
   };
 
-  const openModalHandelar = (data) => {
+  const refundModalHandelar = (data) => {
     setAttractionInfo(data);
     setModalText({
-      tittle: <p className="">Are your sure Cancel This Booking?</p>,
+      tittle: (
+        <p className="">Are your sure Refund back this cancel Booking?</p>
+      ),
       details: (
-        <div>
-          <p>
-            Refund amount add to your payment account after 4-5 working days.
-          </p>
+        <>
           <p className="text-red-600 font-bold">
             Total Ticket: {data?.total_ticket}
           </p>
           <p className="text-red-600 font-bold">
-            Refund Amount: ${data?.total_payment}
+            Return Amount: ${data?.return}
           </p>
-        </div>
+        </>
       ),
     });
     setOpen(true);
@@ -122,21 +122,21 @@ const TripManagePage = () => {
       align: "center",
     },
     {
-      title: <p>Ticket Price</p>,
-      dataIndex: "ticket_price",
+      title: <p>Return Price</p>,
+      dataIndex: "return",
       width: 150,
       align: "center",
     },
     {
-      title: <p>Total Payment</p>,
-      dataIndex: "total_payment",
-      width: 150,
+      title: <p>User Name</p>,
+      dataIndex: "user",
+      width: 200,
       align: "center",
     },
     {
       title: <p>CreatedAt</p>,
       dataIndex: "createdAt",
-      width: 200, // Set the width here
+      width: 200,
       align: "center",
       render: function (data) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
@@ -145,33 +145,18 @@ const TripManagePage = () => {
     },
     {
       title: <p>Action</p>,
-      width: 150, // Set the width here
+      width: 150,
       align: "center",
       render: function (data) {
         return (
           <>
-            {data?.status === "cancel" ? (
-              <>
-                {!data?.refundStatus ? (
-                  <Button type="default" disabled danger>
-                    Already Cancel
-                  </Button>
-                ) : (
-                  <Button type="default" disabled danger>
-                    Refund Successfull
-                  </Button>
-                )}
-              </>
-            ) : (
-              <Button
-                onClick={() => openModalHandelar(data)}
-                type="primary"
-                danger
-              >
-                Cancel
-                {/* <DeleteOutlined /> */}
-              </Button>
-            )}
+            <Button
+              onClick={() => refundModalHandelar(data)}
+              className="m-1"
+              type="primary"
+            >
+              Refund Back
+            </Button>
           </>
         );
       },
@@ -188,19 +173,29 @@ const TripManagePage = () => {
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
 
+  const breadCrumbItems = [
+    {
+      label: <Link href={"/admin"}>Admin</Link>,
+      link: "/admin",
+    },
+    {
+      label: "Manage Attractions",
+      link: "/admin/manage-attractions",
+    },
+    {
+      label: "Booking List",
+      link: "/admin/manage-attractions/booking-list",
+    },
+  ];
+
   return (
     <>
       <Head>
-        <title>Travel Point | Manage Trip</title>
+        <title>Travel Point | Attraction | Refund List</title>
       </Head>
       <main>
         {contextHolder}
-        <BreadcrumbBanar
-          name={"Attractions"}
-          tittle={"My Attractions"}
-          breadItems={[{ title: "My Attractions" }]}
-        />
-
+        <AdminBreadCrumb items={breadCrumbItems} />
         <section>
           <div className="max-w-7xl mx-auto my-4">
             <div className="my-10">
@@ -220,10 +215,10 @@ const TripManagePage = () => {
         </section>
 
         <ConfirmModal
-          submitFn={attractionCancelHandelar}
+          submitFn={refundSubmitHandelar}
           setOpen={setOpen}
           open={open}
-          loading={cancelLoading}
+          loading={refundConfirmLoading}
           modalText={modalText}
         />
       </main>
@@ -231,4 +226,4 @@ const TripManagePage = () => {
   );
 };
 
-export default TripManagePage;
+export default BookingListPage;

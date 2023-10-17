@@ -38,13 +38,14 @@ const SideBar = () => {
           ),
           key: `/admin/manage-attractions`,
         },
+
         {
           label: (
-            <Link href={`/admin/manage-attractions/refund-list`}>
-              Refund List
+            <Link href={`/admin/manage-attractions/booking-list`}>
+              Booking List
             </Link>
           ),
-          key: `/admin/refund-list`,
+          key: `/admin/booking-list`,
         },
         {
           label: (
@@ -53,6 +54,14 @@ const SideBar = () => {
             </Link>
           ),
           key: `/admin/cancel-list`,
+        },
+        {
+          label: (
+            <Link href={`/admin/manage-attractions/refund-list`}>
+              Refund List
+            </Link>
+          ),
+          key: `/admin/refund-list`,
         },
       ],
     },
