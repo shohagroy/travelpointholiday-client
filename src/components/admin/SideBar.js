@@ -67,7 +67,7 @@ const SideBar = () => {
     },
 
     {
-      label: "Manage Admins",
+      label: <Link href={`/admin/manage-admins`}>Manage Admins</Link>,
       key: "Manage Admins",
       icon: <UserSwitchOutlined />,
     },
