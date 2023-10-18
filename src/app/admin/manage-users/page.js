@@ -2,7 +2,7 @@
 
 import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Avatar, Button, Col, Input, Row, message } from "antd";
+import { Avatar, Button, Input, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -29,7 +29,7 @@ const ManageUserPage = () => {
   const [userInfo, setUserInfo] = useState({});
   const [modalText, setModalText] = useState({});
 
-  const query = {};
+  const query = { role: "user" };
   query["size"] = size;
   query["page"] = page;
   query["sortBy"] = sortBy;
@@ -46,7 +46,7 @@ const ManageUserPage = () => {
 
   const { data, isLoading } = useGetAllUserQuery({ ...query });
 
-  const userData = data?.data.map((item, i) => {
+  const userData = data?.data?.data.map((item, i) => {
     return {
       key: item?.id,
       sl: page * size - size + i + 1,
@@ -63,7 +63,7 @@ const ManageUserPage = () => {
       createdAt: item?.createdAt,
     };
   });
-  const meta = data?.meta || {};
+  const meta = data?.data?.meta || {};
 
   const [changeUserRole, { isLoading: userRoleLoading }] =
     useChangeUserRoleMutation();
@@ -252,24 +252,11 @@ const ManageUserPage = () => {
 
           <div className="max-w-7xl mx-auto my-4">
             <div className="mt-10">
-              <Row gutter={16}>
-                <Col span={16}>
-                  <Input
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search..."
-                    className="p-3 text-xl"
-                  />
-                </Col>
-                <Col span={8}>
-                  <Button
-                    // onClick={() => setIsEditable(true)}
-                    className="w-full h-full text-xl "
-                    type="primary"
-                  >
-                    Add New Country +
-                  </Button>
-                </Col>
-              </Row>
+              <Input
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search..."
+                className="p-3 text-xl w-full"
+              />
             </div>
 
             <div className="my-10">
