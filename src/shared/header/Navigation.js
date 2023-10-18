@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Badge,
@@ -33,6 +33,7 @@ import { getFromLocalStorage } from "@/utils/local-storage";
 import { removeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { userRole } from "@/constans/userRole";
+import { useGetUserCartsQuery } from "@/redux/features/cart/cartApi";
 
 const Navigation = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -48,6 +49,8 @@ const Navigation = () => {
     removeUserInfo("accessToken");
     router.push("/login");
   };
+
+  const { data: cartData } = useGetUserCartsQuery();
 
   const menu = [
     {
@@ -198,37 +201,20 @@ const Navigation = () => {
             </Link>
           ))}
 
+          {/* <HeaderIcon /> */}
+
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
-              {email ? (
-                <div>
-                  <Badge count={99}>
-                    <Avatar
-                      className="cursor-pointer"
-                      onClick={() => setCartOpen(!cartOpen)}
-                      size="large"
-                      icon={<ShoppingCartOutlined />}
-                    />
-                  </Badge>
-                  <Badge count={99}>
-                    <Avatar size="large" icon={<BellOutlined />} />
-                  </Badge>
-                </div>
-              ) : (
-                <div>
-                  <Badge count={99}>
-                    <Avatar
-                      className="cursor-pointer"
-                      onClick={() => setCartOpen(!cartOpen)}
-                      size="large"
-                      icon={<ShoppingCartOutlined />}
-                    />
-                  </Badge>
-                  <Badge count={99}>
-                    <Avatar size="large" icon={<BellOutlined />} />
-                  </Badge>
-                </div>
-              )}
+              <div>
+                <Badge count={cartData?.data.length}>
+                  <Avatar
+                    className="cursor-pointer mx-1"
+                    onClick={() => setCartOpen(!cartOpen)}
+                    size="large"
+                    icon={<ShoppingCartOutlined />}
+                  />
+                </Badge>
+              </div>
 
               <Dropdown
                 menu={{
@@ -303,7 +289,7 @@ const Navigation = () => {
         />
       </Drawer>
 
-      <CartDrawer open={cartOpen} setOpen={setCartOpen} />
+      <CartDrawer data={cartData?.data} open={cartOpen} setOpen={setCartOpen} />
     </div>
   );
 };

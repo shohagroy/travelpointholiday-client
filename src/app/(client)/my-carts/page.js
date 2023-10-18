@@ -1,114 +1,194 @@
 "use client";
 
 import BreadcrumbBanar from "@/components/ui/BreadcrumbBanar";
-import { Button, Alert, Table, Card, Flex } from "antd";
+import { Button, Alert, Table, Card, Flex, message, Image, Input } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import {
+  DeleteOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  RollbackOutlined,
+} from "@ant-design/icons";
 
-import { RollbackOutlined } from "@ant-design/icons";
-
-const cartData = [
-  {
-    id: 1,
-    images: "image-url-1",
-    title: "Product 1",
-    price: 100,
-    quantity: 2,
-    productId: 1,
-    discount: 10,
-  },
-  {
-    id: 2,
-    images: "image-url-2",
-    title: "Product 2",
-    price: 50,
-    quantity: 1,
-    productId: 2,
-    discount: 5,
-  },
-  // Add more dummy cart items here
-];
+import DisplayTable from "@/components/table/DisplayTable";
+import {
+  useAddToCartMutation,
+  useDecrementCartItemsMutation,
+  useGetUserCartsQuery,
+  useRemoveToCartMutation,
+} from "@/redux/features/cart/cartApi";
 
 const CartPage = () => {
-  const incQuentaty = (product) => {
-    // Implement the logic to increase quantity
+  const [messageApi, contextHolder] = message.useMessage();
+  // const { data } = useSelector((state) => state.cartData);
+
+  const { data: cartData, isLoading } = useGetUserCartsQuery();
+
+  const [addToCart, { incrementLoading }] = useAddToCartMutation();
+
+  const [decrementCartItems, { decrementLoading }] =
+    useDecrementCartItemsMutation();
+
+  const [removeToCart, { removeLoading }] = useRemoveToCartMutation();
+
+  const addToCartHandelar = async (data) => {
+    const result = await addToCart(data).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Cart Item Increment successfully!",
+      });
+    }
   };
 
-  const decQuentaty = (product) => {
-    // Implement the logic to decrease quantity
+  const removeToCartHandelar = async (data) => {
+    const result = await removeToCart(data).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Cart Remove successfully!",
+      });
+    }
   };
 
-  const handelRemoveCartList = (product) => {
-    // Implement the logic to remove a product from the cart
+  const decrementCartItemsQuantity = async (data) => {
+    const result = await decrementCartItems(data).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Cart Item Decrement successfully!",
+      });
+    }
   };
 
-  const tableColumns = [
-    {
-      title: "Image",
-      dataIndex: "images",
-      key: "images",
-    },
-  ];
+  const cartList = cartData?.data?.map((item) => {
+    return {
+      key: item?.id,
+      banar: item?.image,
+      title: item?.tittle,
+      price: `$${item?.price}`,
+      ticket: item?.totalTicket,
+      total: `$${item?.price * item?.totalTicket}`,
+      incDec: item,
+    };
+  });
 
   const columns = [
     {
-      title: "SL",
-      dataIndex: "sl",
+      title: <p>Banar</p>,
+      dataIndex: "banar",
+      width: 150,
+      align: "center",
+      render: function (data) {
+        return <Image src={data} alt="banar" />;
+      },
     },
     {
-      title: "Image",
-      dataIndex: "image",
-    },
-    {
-      title: "Title",
+      title: <p>Title</p>,
       dataIndex: "title",
-      render: (text, record) => (
-        <Link href={`/${record.productId}`}>{text}</Link>
-      ),
+      width: 250,
+      align: "center",
     },
     {
-      title: "Unit Price",
-      dataIndex: "unitPrice",
-    },
-    {
-      title: "Discount",
-      dataIndex: "discount",
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      render: (text, record) => (
-        <div className="flex justify-center items-start">
-          {/* Quantity buttons go here */}
-        </div>
-      ),
-    },
-    {
-      title: "Price",
+      title: <p>Price</p>,
       dataIndex: "price",
+      width: 100,
+      align: "center",
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      render: (text, record) => (
-        <button
-          onClick={() => handelRemoveCartList(record)}
-          className="text-red-600"
-        >
-          {/* <BiTrash size={30} /> */}
-        </button>
-      ),
+      title: <p>Ticket</p>,
+      dataIndex: "ticket",
+      width: 100,
+      align: "center",
+    },
+    {
+      title: <p>Total Price</p>,
+      dataIndex: "total",
+      width: 100,
+      align: "center",
+    },
+    {
+      title: <p>Inc/Dec</p>,
+      dataIndex: "incDec",
+      width: 200,
+      align: "center",
+      render: function (data) {
+        return (
+          <div
+            className="p-1 w-full"
+            style={{
+              border: "1px solid #003A94",
+              borderRadius: "10px",
+            }}
+          >
+            <Flex>
+              <Button
+                onClick={() => decrementCartItemsQuantity(data)}
+                loading={decrementLoading}
+                type="link"
+                // icon={}
+              >
+                <MinusOutlined />
+              </Button>
+
+              <Input value={data?.totalTicket} className="text-center" />
+
+              <Button
+                loading={incrementLoading}
+                onClick={() => addToCartHandelar(data)}
+                type="link"
+                // icon={}
+              >
+                <PlusOutlined />
+              </Button>
+            </Flex>
+          </div>
+        );
+      },
+    },
+    {
+      title: <p>Action</p>,
+      width: 200,
+      align: "center",
+      render: function (data) {
+        return (
+          <>
+            <Button
+              loading={removeLoading}
+              className="mx-1"
+              onClick={() => removeToCartHandelar({ ...data, id: data?.key })}
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
+            >
+              Remove
+            </Button>
+          </>
+        );
+      },
     },
   ];
 
-  const subtotal = cartData.reduce(
-    (acc, product) =>
-      acc +
-      (product.price - (product.price * product.discount) / 100) *
-        product.quantity,
-    0
-  );
   return (
     <>
       <Head>
@@ -116,6 +196,7 @@ const CartPage = () => {
       </Head>
 
       <main>
+        {contextHolder}
         <BreadcrumbBanar
           name={"My Carts"}
           tittle={"My Carts"}
@@ -130,9 +211,23 @@ const CartPage = () => {
                   type="link"
                   icon={<RollbackOutlined />}
                 >
-                  Continue Shopping
+                  Back to Home
                 </Button>
               </Link>
+            </div>
+
+            <div className="my-10">
+              <DisplayTable
+                loading={isLoading}
+                columns={columns}
+                dataSource={cartList}
+                // pageSize={size}
+                // totalPages={meta?.total}
+                // showSizeChanger={true}
+                // onPaginationChange={onPaginationChange}
+                // onTableChange={onTableChange}
+                // showPagination={true}
+              />
             </div>
 
             <div>

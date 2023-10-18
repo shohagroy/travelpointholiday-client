@@ -4,8 +4,6 @@ import Head from "next/head";
 import React from "react";
 
 const Attractions = async () => {
-  // console.log(params);
-  // console.log(searchParams);
   return (
     <>
       <Head>

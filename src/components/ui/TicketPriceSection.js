@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, Col, Flex, Input, Row } from "antd";
+import { Button, Card, Col, Flex, Input, Row, message } from "antd";
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import {
@@ -9,14 +9,55 @@ import {
   MinusOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import { useAddToCartMutation } from "@/redux/features/cart/cartApi";
 
 const TicketPriceSection = ({ data }) => {
   const [ticketCount, setTicketCount] = useState(1);
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const { id, tripDate, tripTime, price, city, bookingSeat, totalSeat } =
-    data || {};
+  const {
+    id,
+    tripDate,
+    images,
+    tripTime,
+    price,
+    city,
+    bookingSeat,
+    totalSeat,
+    tittle,
+  } = data || {};
+
+  const [addToCart, { isLoading }] = useAddToCartMutation();
+
+  const addToCartHandelar = async () => {
+    const cartData = {
+      attractionId: id,
+      tittle,
+      image: images[0]?.secure_url,
+      price,
+      totalTicket: ticketCount,
+    };
+
+    const result = await addToCart(cartData).unwrap();
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "Added to cart successfully!",
+      });
+
+      setTicketCount(1);
+    }
+  };
+
   return (
     <div className="relative mt-6">
+      {contextHolder}
       <Row gutter={20} className="sticky top-4">
         <Col span={24}>
           <div className="sticky top-4 w-full h-full" style={{ zIndex: 1 }}>
@@ -120,13 +161,30 @@ const TicketPriceSection = ({ data }) => {
                     </div>
                   </Flex>
 
-                  <Link
-                    href={`/attractions/check-out?attraction=${id}&ticketCount=${ticketCount}`}
-                  >
-                    <Button className="mt-4 text-center w-full" type="primary">
-                      Reserve
+                  <Flex justify="space-between" align="center">
+                    <Button
+                      loading={isLoading}
+                      onClick={addToCartHandelar}
+                      danger
+                      className="mt-4 mx-1 text-center w-full"
+                      type="primary"
+                    >
+                      {isLoading ? "Please Wait.." : "Add To Cart"}
                     </Button>
-                  </Link>
+
+                    <div className="w-full mx-1">
+                      <Link
+                        href={`/attractions/check-out?attraction=${id}&ticketCount=${ticketCount}`}
+                      >
+                        <Button
+                          className="mt-4 text-center w-full"
+                          type="primary"
+                        >
+                          Reserve
+                        </Button>
+                      </Link>
+                    </div>
+                  </Flex>
                 </div>
               </Card>
             </Card>

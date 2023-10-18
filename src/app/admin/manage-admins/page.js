@@ -64,6 +64,7 @@ const ManageUserPage = () => {
       createdAt: item?.createdAt,
     };
   });
+
   const meta = data?.data?.meta || {};
 
   const [changeUserRole, { isLoading: userRoleLoading }] =
@@ -158,23 +159,6 @@ const ManageUserPage = () => {
       width: 200,
       align: "center",
     },
-    // {
-    //   title: <p>Label</p>,
-    //   dataIndex: "role",
-    //   width: 100,
-    //   align: "center",
-    //   render: function (data) {
-    //     return (
-    //       <div>
-    //         <Switch
-    //           checkedChildren="Admin"
-    //           unCheckedChildren="User"
-    //           defaultChecked={data?.role === "admin"}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       title: <p>CreatedAt</p>,
       dataIndex: "createdAt",
