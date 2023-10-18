@@ -2,24 +2,23 @@
 
 import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Avatar, Button, Col, Input, Row, Switch, message } from "antd";
+import { Avatar, Button, Col, Input, Row, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
-import { EditOutlined, DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import ConfirmModal from "@/components/ui/ConfirmModal";
-import CountryDrawer from "@/components/drawer/CountryDrawer";
+
 import {
-  useDeleteCountryMutation,
-  useGetAllCountriesQuery,
-} from "@/redux/features/country/countryApi";
-import { useGetAllUserQuery } from "@/redux/features/user/userApi";
+  useChangeUserRoleMutation,
+  useDeleteUserMutation,
+  useGetAllUserQuery,
+} from "@/redux/features/user/userApi";
 
 const ManageUserPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [isEditable, setIsEditable] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
@@ -27,7 +26,7 @@ const ManageUserPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [open, setOpen] = useState(false);
-  const [countryInfo, setCountryInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({});
   const [modalText, setModalText] = useState({});
 
   const query = {};
@@ -47,7 +46,6 @@ const ManageUserPage = () => {
 
   const { data, isLoading } = useGetAllUserQuery({ ...query });
 
-  console.log(data);
   const userData = data?.data.map((item, i) => {
     return {
       key: item?.id,
@@ -67,11 +65,19 @@ const ManageUserPage = () => {
   });
   const meta = data?.meta || {};
 
-  const [deleteCountry, { isLoading: deleteLoading }] =
-    useDeleteCountryMutation();
+  const [changeUserRole, { isLoading: userRoleLoading }] =
+    useChangeUserRoleMutation();
 
-  const itemDeleteHandelar = async () => {
-    const result = await deleteCountry(countryInfo?.key).unwrap();
+  const [deleteUser, { isLoading: userDeleteLoading }] =
+    useDeleteUserMutation();
+
+  const makeAdminHandelar = async () => {
+    const data = {
+      id: userInfo?.key,
+      role: "admin",
+    };
+    const result = await changeUserRole(data).unwrap();
+
     if (result?.errorMessages) {
       messageApi.open({
         type: "error",
@@ -81,16 +87,40 @@ const ManageUserPage = () => {
     if (result?.data?.id) {
       messageApi.open({
         type: "success",
-        content: "Country Delete Successfully!",
+        content: "Make Admin Successfully!",
+      });
+      setOpen(false);
+    }
+  };
+
+  const userDeleteHandelar = async () => {
+    const data = {
+      email: userInfo?.email,
+    };
+    const result = await deleteUser(data).unwrap();
+
+    if (result?.errorMessages) {
+      messageApi.open({
+        type: "error",
+        content: result.errorMessages || "Something went wrong!",
+      });
+    }
+    if (result?.data?.id) {
+      messageApi.open({
+        type: "success",
+        content: "User Delete Successfully!",
       });
       setOpen(false);
     }
   };
 
   const openModalHandelar = (data) => {
-    setCountryInfo(data);
+    setUserInfo(data);
+
     setModalText({
-      tittle: "Are your sure Delete this Country?",
+      tittle: data?.create
+        ? "Are you sure make admin this user?"
+        : "Are your sure Delete this user?",
       details: (
         <div>
           <p>
@@ -100,11 +130,6 @@ const ManageUserPage = () => {
       ),
     });
     setOpen(true);
-  };
-
-  const handelCountryUpdate = (data) => {
-    setCountryInfo(data);
-    setIsEditable(true);
   };
 
   const columns = [
@@ -132,24 +157,24 @@ const ManageUserPage = () => {
       width: 200,
       align: "center",
     },
-    {
-      title: <p>Label</p>,
-      dataIndex: "role",
-      width: 100,
-      align: "center",
-      render: function (data) {
-        return (
-          <div>
-            <Switch
-              onChange={(e) => console.log(e, data)}
-              checkedChildren="Admin"
-              unCheckedChildren="User"
-              defaultChecked={data?.role === "admin"}
-            />
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: <p>Label</p>,
+    //   dataIndex: "role",
+    //   width: 100,
+    //   align: "center",
+    //   render: function (data) {
+    //     return (
+    //       <div>
+    //         <Switch
+    //           onChange={(e) => console.log(e, data)}
+    //           checkedChildren="Admin"
+    //           unCheckedChildren="User"
+    //           defaultChecked={data?.role === "admin"}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: <p>CreatedAt</p>,
       dataIndex: "createdAt",
@@ -162,13 +187,22 @@ const ManageUserPage = () => {
     },
     {
       title: <p>Action</p>,
-      width: 100, // Set the width here
+      width: 200, // Set the width here
       align: "center",
       render: function (data) {
         return (
           <>
             <Button
-              onClick={() => openModalHandelar(data)}
+              className="mx-1"
+              onClick={() => openModalHandelar({ ...data, create: true })}
+              type="primary"
+            >
+              Make Admin
+            </Button>
+
+            <Button
+              className="mx-1"
+              onClick={() => openModalHandelar({ ...data, delete: true })}
               type="primary"
               danger
             >
@@ -228,7 +262,7 @@ const ManageUserPage = () => {
                 </Col>
                 <Col span={8}>
                   <Button
-                    onClick={() => setIsEditable(true)}
+                    // onClick={() => setIsEditable(true)}
                     className="w-full h-full text-xl "
                     type="primary"
                   >
@@ -254,17 +288,11 @@ const ManageUserPage = () => {
           </div>
         </section>
 
-        <CountryDrawer
-          open={isEditable}
-          setOpen={setIsEditable}
-          valueObj={countryInfo}
-          valueFn={setCountryInfo}
-        />
         <ConfirmModal
-          submitFn={itemDeleteHandelar}
+          submitFn={userInfo.create ? makeAdminHandelar : userDeleteHandelar}
           setOpen={setOpen}
           open={open}
-          loading={deleteLoading}
+          loading={userRoleLoading || userDeleteLoading}
           modalText={modalText}
         />
       </main>

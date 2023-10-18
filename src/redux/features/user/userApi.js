@@ -63,6 +63,24 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+
+    changeUserRole: build.mutation({
+      query: (data) => ({
+        url: "/auth/change-user-role",
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["users"],
+    }),
+
+    deleteUser: build.mutation({
+      query: (data) => ({
+        url: "/auth/delete-user",
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
@@ -74,4 +92,6 @@ export const {
   useChangeUserPasswordMutation,
   useUpdateAvatarMutation,
   useGetAllUserQuery,
+  useChangeUserRoleMutation,
+  useDeleteUserMutation,
 } = userApi;
