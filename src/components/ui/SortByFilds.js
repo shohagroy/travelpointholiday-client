@@ -5,15 +5,15 @@ const SortByFilds = ({ setFn, value }) => {
   const sortedItems = [
     {
       title: "Our top Picks",
-      value: "top-pick",
+      value: "",
     },
     {
-      title: "Most Popular",
-      value: "most-popular",
+      title: "Price Highest to Lowest",
+      value: "desc",
     },
     {
-      title: "Lowest Price",
-      value: "lowest-price",
+      title: "Price Lowest to Highest",
+      value: "asc",
     },
   ];
   return (

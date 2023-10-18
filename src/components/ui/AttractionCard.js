@@ -13,8 +13,6 @@ import Link from "next/link";
 const AttractionCard = ({ data }) => {
   const { id, banarTittle, images, price, tittle, duration, city } = data || {};
 
-  console.log(id);
-
   return (
     <Space
       direction="vertical"

@@ -5,27 +5,30 @@ import FilterOptions from "@/components/ui/FilterOptions";
 import PaginationOprions from "@/components/ui/PaginationOprions";
 import SortByFilds from "@/components/ui/SortByFilds";
 import { Button, Card, Col, Input, Row } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
-import InitialLoading from "@/components/loader/InitialLoading";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import AttractionLoader from "@/components/skeleton-loader/AttractionLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { storeAttractionData } from "@/redux/features/attraction/attractionSlice";
 
 const AttractionLayout = ({ children }) => {
-  const [sortBy, setSortBy] = useState("top-pick");
+  const { search: attractionSearch } = useSelector((state) => state.attraction);
+  const [sortBy, setSortBy] = useState("price");
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sortOrder, setSortOrder] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(attractionSearch);
   const [countryId, setCountryId] = useState("");
   const [cityId, setCityId] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const dispatch = useDispatch();
 
   const query = {};
   query["size"] = size;
   query["page"] = page;
-  // query["sortBy"] = sortBy;
+  query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
 
   if (countryId) {
@@ -49,6 +52,10 @@ const AttractionLayout = ({ children }) => {
 
   const { data, isLoading } = useGetAllAttractionsQuery({ ...query });
 
+  useEffect(() => {
+    dispatch(storeAttractionData(data?.data));
+  }, [data, dispatch]);
+
   const breadItems = [
     {
       title: "Attractions",
@@ -68,11 +75,13 @@ const AttractionLayout = ({ children }) => {
                 <Card className="shadow-md">
                   <div>
                     <Input
+                      defaultValue={attractionSearch}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       size="large"
                       placeholder="search your attraction.."
                       prefix={<SearchOutlined />}
                     />
+
                     <Button size="large" type="primary" className="w-full mt-2">
                       Search
                     </Button>
@@ -88,13 +97,29 @@ const AttractionLayout = ({ children }) => {
             </Col>
 
             <Col className="my-3" span={16}>
-              <SortByFilds value={sortBy} setFn={setSortBy} />
+              <SortByFilds value={sortOrder} setFn={setSortOrder} />
 
               <div className="">
-                {isLoading ? <AttractionLoader count={10} /> : children}
+                {isLoading ? (
+                  <AttractionLoader count={10} />
+                ) : data?.data?.length ? (
+                  children
+                ) : (
+                  <div className="h-[40vh] flex justify-center items-center">
+                    <h2 className="text-xl">No Items found!</h2>
+                  </div>
+                )}
               </div>
-              {}
-              <PaginationOprions meta={data?.meta} />
+
+              {data?.data?.length && (
+                <PaginationOprions
+                  setPage={setPage}
+                  size={size}
+                  setSize={setSize}
+                  page={page}
+                  meta={data?.meta}
+                />
+              )}
             </Col>
           </Row>
         </div>

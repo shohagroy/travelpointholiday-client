@@ -115,7 +115,7 @@ const Navigation = () => {
         {
           key: "4",
           label: (
-            <Link href="/manage-account">
+            <Link href="/reviews">
               <Button
                 icon={<MessageOutlined />}
                 type="link"

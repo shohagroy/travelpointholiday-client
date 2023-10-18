@@ -5,13 +5,8 @@ import ImageGallery from "@/components/ui/ImageGallery";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import {
-  StarFilled,
-  CalendarOutlined,
-  RightOutlined,
-  FieldTimeOutlined,
-} from "@ant-design/icons";
-import { Button, Col, Descriptions, Flex, Row } from "antd";
+import { StarFilled, CalendarOutlined } from "@ant-design/icons";
+import { Col, Flex, Row } from "antd";
 import AttractionReview from "@/components/ui/AttractionReview";
 import FAQ from "@/components/ui/FAQ";
 import LeaveFeedback from "@/components/ui/LeaveFeedback";
@@ -23,12 +18,14 @@ const AttractionDetails = ({ params }) => {
 
   const { data, isLoading } = useGetAttractionQuery(id);
 
-  const { tittle, banarTittle, images, description, country } =
-    data?.data || {};
-
-  console.log(data?.data);
-
-  console.log(tittle);
+  const {
+    id: attractionId,
+    tittle,
+    banarTittle,
+    images,
+    description,
+    country,
+  } = data?.data || {};
 
   const breadItems = [
     {
@@ -85,13 +82,13 @@ const AttractionDetails = ({ params }) => {
                 </div>
 
                 {/* review section  */}
-                <AttractionReview />
+                {attractionId && <AttractionReview id={attractionId} />}
 
                 {/* faq section  */}
                 <FAQ />
 
                 {/* feedback  */}
-                <LeaveFeedback />
+                <LeaveFeedback id={attractionId} />
               </Col>
 
               <Col span={8} className="relative">

@@ -106,7 +106,6 @@ const ManageAttractions = () => {
     useDeleteAttractionMutation();
 
   const itemDeleteHandelar = async () => {
-    // console.log("delete", attractionInfo);
     const result = await deleteAttraction(attractionInfo?.key).unwrap();
     if (result?.errorMessages) {
       messageApi.open({

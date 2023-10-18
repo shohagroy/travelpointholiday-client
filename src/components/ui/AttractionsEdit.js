@@ -29,7 +29,6 @@ const AttractionsEdit = ({ defaultInfo }) => {
   const [updateAttractionInfo, { isLoading }] =
     useUpdateAttractionInfoMutation();
 
-  // console.log(images);
   const { data: categoryData, isLoading: categoryLoading } =
     useGetAllCategoryDataQuery();
 
@@ -187,7 +186,6 @@ const AttractionsEdit = ({ defaultInfo }) => {
                   label={"Trip Date"}
                   name={"tripDate"}
                   size="large"
-                  // onChange={(e) => console.log(e)}
                 />
               </div>
             </Col>

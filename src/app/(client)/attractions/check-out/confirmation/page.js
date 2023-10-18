@@ -8,7 +8,6 @@ const ConfirmationPage = ({ searchParams }) => {
   const { data: attractionData, isLoading: attractionLoading } =
     useGetAttractionQuery(attraction);
 
-  console.log(attractionData);
   return (
     <>
       <Head>

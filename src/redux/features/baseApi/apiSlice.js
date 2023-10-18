@@ -14,5 +14,6 @@ export const baseApi = createApi({
     "cities",
     "attractions",
     "booking",
+    "reviews",
   ],
 });

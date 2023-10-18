@@ -59,7 +59,6 @@ const ManageCategoryPage = () => {
     useDeleteCategoryMutation();
 
   const itemDeleteHandelar = async () => {
-    console.log("delete", categoryInfo);
     const result = await deleteCategory(categoryInfo?.key).unwrap();
     if (result?.errorMessages) {
       messageApi.open({

@@ -5,6 +5,7 @@ import Form from "@/components/forms/From";
 import { useGetAttractionQuery } from "@/redux/features/attraction/attractionApi";
 import { useCreateBookingMutation } from "@/redux/features/booking/bookingApi";
 import { useGetUserProfileQuery } from "@/redux/features/user/userApi";
+import PrivateRouteHOC from "@/routes/PrivateRoute";
 import { profileSchema } from "@/schemas/profile";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Col, Flex, Row, message } from "antd";
@@ -50,8 +51,6 @@ const Checkout = ({ searchParams }) => {
       attractionId: id,
       totalTicket: ticketCount,
     };
-
-    console.log(checkoutData);
 
     const result = await createBooking(checkoutData).unwrap();
     if (result?.errorMessages) {
@@ -217,4 +216,4 @@ const Checkout = ({ searchParams }) => {
   );
 };
 
-export default Checkout;
+export default PrivateRouteHOC(Checkout);

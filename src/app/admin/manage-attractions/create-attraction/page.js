@@ -28,7 +28,6 @@ const CreateAttractionPage = () => {
 
   const router = useRouter();
 
-  // console.log(images);
   const { data: categoryData, isLoading: categoryLoading } =
     useGetAllCategoryDataQuery();
 
@@ -223,7 +222,6 @@ const CreateAttractionPage = () => {
                           label={"Trip Date"}
                           name={"tripDate"}
                           size="large"
-                          // onChange={(e) => console.log(e)}
                         />
                       </div>
                     </Col>

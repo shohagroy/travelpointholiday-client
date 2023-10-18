@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Card, Col, Flex, Image, Row } from "antd";
 import Text from "./ui/Text";
@@ -6,8 +8,12 @@ import {
   SlackOutlined,
   CalendarOutlined,
 } from "@ant-design/icons/lib/icons";
+import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
+import Link from "next/link";
+import CardLoader from "./skeleton-loader/CardLoader";
 
 const TopDestinations = () => {
+  const { data, isLoading } = useGetAllAttractionsQuery({ size: 6 });
   const items = [
     {
       tittle: "Explore top attractions",
@@ -34,24 +40,35 @@ const TopDestinations = () => {
       <Text text={"Top destinations"} />
 
       <Row className="" gutter={20}>
-        {[...Array(6)].map((item, i) => (
-          <Col className="my-3" key={i} xs={24} sm={12} md={8} lg={8}>
-            <Card
-              className="shadow-md"
-              cover={
-                <Image
-                  className="h-[200px]"
-                  alt="example"
-                  src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                />
-              }
-            >
-              <p className="font-bold">Dubai</p>
-              <p>United Arab Emirates</p>
-              <p>667 thinks to do!</p>
-            </Card>
-          </Col>
-        ))}
+        {isLoading
+          ? [...Array(6)].map((_, i) => (
+              <Col key={i} className="my-3" xs={24} sm={12} md={8} lg={8}>
+                <CardLoader />
+              </Col>
+            ))
+          : data?.data?.map((item, i) => (
+              <Col className="my-3" key={i} xs={24} sm={12} md={8} lg={8}>
+                <Link href={`/attractions?categoryId=${item?.category?.id}`}>
+                  <Card
+                    className="shadow-md"
+                    cover={
+                      <Image
+                        preview={false}
+                        className="h-[200px]"
+                        alt="example"
+                        src={item?.images[0]?.secure_url}
+                      />
+                    }
+                  >
+                    <p className="font-bold">{item?.city?.name}</p>
+                    <p>{item?.country?.name}</p>
+                    <p>{item?.banarTittle}</p>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+
+        {}
       </Row>
 
       <div

@@ -16,6 +16,7 @@ import {
   useDeleteUserMutation,
   useGetAllUserQuery,
 } from "@/redux/features/user/userApi";
+import { loginUser } from "@/utils/LoginUser";
 
 const ManageUserPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -166,7 +167,6 @@ const ManageUserPage = () => {
     //     return (
     //       <div>
     //         <Switch
-    //           onChange={(e) => console.log(e, data)}
     //           checkedChildren="Admin"
     //           unCheckedChildren="User"
     //           defaultChecked={data?.role === "admin"}
@@ -193,6 +193,7 @@ const ManageUserPage = () => {
         return (
           <>
             <Button
+              disabled={loginUser().email === data?.email}
               className="mx-1"
               onClick={() => openModalHandelar({ ...data, create: true })}
               type="primary"
@@ -201,6 +202,7 @@ const ManageUserPage = () => {
             </Button>
 
             <Button
+              disabled={loginUser().email === data?.email}
               className="mx-1"
               onClick={() => openModalHandelar({ ...data, delete: true })}
               type="primary"

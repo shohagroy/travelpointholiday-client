@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   data: [],
   loading: true,
+  search: "",
 };
 
 const attractionSlice = createSlice({
@@ -13,8 +14,12 @@ const attractionSlice = createSlice({
       state.data = action.payload;
       state.loading = false;
     },
+
+    searchQuery: (state, action) => {
+      state.search = action.payload;
+    },
   },
 });
 
-export const { storeAttractionData } = attractionSlice.actions;
+export const { storeAttractionData, searchQuery } = attractionSlice.actions;
 export default attractionSlice.reducer;

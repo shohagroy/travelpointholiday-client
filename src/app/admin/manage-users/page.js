@@ -166,7 +166,6 @@ const ManageUserPage = () => {
     //     return (
     //       <div>
     //         <Switch
-    //           onChange={(e) => console.log(e, data)}
     //           checkedChildren="Admin"
     //           unCheckedChildren="User"
     //           defaultChecked={data?.role === "admin"}

@@ -12,7 +12,6 @@ import Link from "next/link";
 
 const TicketPriceSection = ({ data }) => {
   const [ticketCount, setTicketCount] = useState(1);
-  console.log(data);
 
   const { id, tripDate, tripTime, price, city, bookingSeat, totalSeat } =
     data || {};
@@ -41,7 +40,7 @@ const TicketPriceSection = ({ data }) => {
                 </p>
 
                 <p className="text-2xl my-3 font-semibold bg-[#003A94] text-white text-center p-3 rounded-mm">
-                  Ticket: {price} Only.
+                  Ticket: ${price} Only.
                 </p>
               </div>
 

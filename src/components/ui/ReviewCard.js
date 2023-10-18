@@ -1,33 +1,38 @@
 import { Avatar, Button, Card, Flex, Rate } from "antd";
+import Link from "next/link";
 import React from "react";
+import dayjs from "dayjs";
 
-const ReviewCard = () => {
+const ReviewCard = ({ data }) => {
+  const { user, review, star, createdAt } = data || {};
+
   return (
-    <Card className="shadow-md">
+    <Card className="shadow-md h-[350px]">
       <Flex>
         <div className="w-[150px]">
-          <Avatar size={"large"}>U</Avatar>
+          <Avatar size={"large"} src={user?.profileImg}>
+            U
+          </Avatar>
         </div>
 
         <div className="ml-3">
-          <h3>STEPHEN</h3>
-          <p>United Kingdom</p>
+          <h3>{user?.name}</h3>
+          <p>{user?.address}</p>
 
           <Flex className="mt-2">
-            <Rate allowHalf value={4} />
-            <p>5 / 5</p>
+            <Rate allowHalf value={star} />
+            <p>{star} / 5</p>
           </Flex>
 
           <p className="my-4">
-            We booked our tickets in advance. Proceeded to the ticket desk to
-            get our tickets to gain entrance, and then endured a very long
-            queue. Best thing tha tickets to gain entrance, and then endured a
-            very long queue. Best thing tha tickets to gain entrance, and then
-            endured a very long queue. Best thing tha...
+            {review?.slice(0, 250)}
             <Button type="link">more</Button>
           </p>
 
-          <p className="mt-4">Posted May 23, 2023 on Booking.com</p>
+          <p className="mt-4">
+            Posted {dayjs(createdAt).format("MMM D, YYYY hh:mm A")} on{" "}
+            <Link href={"/"}>Travel Point</Link>
+          </p>
         </div>
       </Flex>
     </Card>
