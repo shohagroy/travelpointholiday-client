@@ -2,11 +2,11 @@
 
 import AdminBreadCrumb from "@/components/admin/AdminBreadCrumb";
 import DisplayTable from "@/components/table/DisplayTable";
-import { Button, Col, Input, Row, message } from "antd";
+import { Avatar, Button, Col, Input, Row, Switch, message } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hooks/useDebounced";
 import ConfirmModal from "@/components/ui/ConfirmModal";
@@ -15,6 +15,7 @@ import {
   useDeleteCountryMutation,
   useGetAllCountriesQuery,
 } from "@/redux/features/country/countryApi";
+import { useGetAllUserQuery } from "@/redux/features/user/userApi";
 
 const ManageUserPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -44,12 +45,23 @@ const ManageUserPage = () => {
     query["search"] = debouncedTerm;
   }
 
-  const { data, isLoading } = useGetAllCountriesQuery({ ...query });
-  const countriesData = data?.data.map((item, i) => {
+  const { data, isLoading } = useGetAllUserQuery({ ...query });
+
+  console.log(data);
+  const userData = data?.data.map((item, i) => {
     return {
       key: item?.id,
       sl: page * size - size + i + 1,
       name: item?.name,
+      avatar: (
+        <Avatar
+          src={item?.profileImg?.secure_url}
+          size="large"
+          icon={<UserOutlined />}
+        />
+      ),
+      email: item?.email,
+      role: item,
       createdAt: item?.createdAt,
     };
   });
@@ -104,8 +116,8 @@ const ManageUserPage = () => {
     },
     {
       title: <p>Avatar</p>,
-      dataIndex: "name",
-      width: 150,
+      dataIndex: "avatar",
+      width: 80,
       align: "center",
     },
     {
@@ -116,9 +128,27 @@ const ManageUserPage = () => {
     },
     {
       title: <p>Email</p>,
-      dataIndex: "name",
-      width: 250,
+      dataIndex: "email",
+      width: 200,
       align: "center",
+    },
+    {
+      title: <p>Label</p>,
+      dataIndex: "role",
+      width: 100,
+      align: "center",
+      render: function (data) {
+        return (
+          <div>
+            <Switch
+              onChange={(e) => console.log(e, data)}
+              checkedChildren="Admin"
+              unCheckedChildren="User"
+              defaultChecked={data?.role === "admin"}
+            />
+          </div>
+        );
+      },
     },
     {
       title: <p>CreatedAt</p>,
@@ -137,15 +167,6 @@ const ManageUserPage = () => {
       render: function (data) {
         return (
           <>
-            <Button
-              style={{
-                margin: "0px 5px",
-              }}
-              onClick={() => handelCountryUpdate(data)}
-              type="primary"
-            >
-              <EditOutlined />
-            </Button>
             <Button
               onClick={() => openModalHandelar(data)}
               type="primary"
@@ -221,7 +242,7 @@ const ManageUserPage = () => {
               <DisplayTable
                 loading={isLoading}
                 columns={columns}
-                dataSource={countriesData}
+                dataSource={userData}
                 pageSize={size}
                 totalPages={meta?.total}
                 showSizeChanger={true}

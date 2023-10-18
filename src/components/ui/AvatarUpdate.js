@@ -17,7 +17,9 @@ const AvatarUpdate = ({ avatar }) => {
   };
 
   const handleCancel = () => {
+    setImages([]);
     setOpen(false);
+    setImgPreview(false);
   };
 
   const handelUpload = async () => {
@@ -63,6 +65,7 @@ const AvatarUpdate = ({ avatar }) => {
         confirmLoading={isLoading}
         onCancel={handleCancel}
       >
+        <p>jpg or png image less than 500kb</p>
         <div>
           <InputImage
             imgPreview={imgPreview}

@@ -106,19 +106,11 @@ const SideBar = () => {
       icon: <PieChartFilled />,
     },
     {
-      label: "Profile",
+      label: (
+        <Link href={"/manage-account/personal-details"}>Manage Profile</Link>
+      ),
       key: "profile",
       icon: <ProfileOutlined />,
-      children: [
-        {
-          label: <Link href={`/admin`}>Account Profile</Link>,
-          key: `/profile`,
-        },
-        {
-          label: <Link href={`/admin`}>Change Password</Link>,
-          key: `/change-password`,
-        },
-      ],
     },
   ];
 

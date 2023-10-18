@@ -39,7 +39,7 @@ const LoginPage = () => {
     if (result?.data?.accessToken) {
       messageApi.open({
         type: "success",
-        content: "User created Successfully!",
+        content: "User Login Successfully!",
       });
       storeUserInfo({ accessToken: result?.data?.accessToken });
       router.push(router.query?.callbackUrl || "/");

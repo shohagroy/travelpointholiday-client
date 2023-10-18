@@ -2,7 +2,10 @@
 import AdminHeader from "@/components/admin/AdminHeader";
 import SideBar from "@/components/admin/SideBar";
 import InitialLoading from "@/components/loader/InitialLoading";
+import { userRole } from "@/constans/userRole";
 import { isLoggedIn } from "@/services/auth.service";
+import { decodedToken } from "@/utils/jwt";
+import { getFromLocalStorage } from "@/utils/local-storage";
 import { Layout, Row, Space, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,12 +17,20 @@ const AdminDashboardLayout = ({ children }) => {
   const userLoggedIn = isLoggedIn();
   const [isLoading, setIsLoading] = useState(false);
 
+  const token = getFromLocalStorage("accessToken");
+  const tokenInfo = token ? decodedToken(token) : {};
+
+  const { role, avatar, name } = tokenInfo;
+
   useEffect(() => {
-    if (!userLoggedIn) {
+    if (
+      (!userLoggedIn && role !== userRole.ADMIN) ||
+      (!userLoggedIn && role !== userRole.SUPER_ADMIN)
+    ) {
       router.push("/login");
     }
     setIsLoading(true);
-  }, [router, isLoading, userLoggedIn]);
+  }, [router, isLoading, userLoggedIn, role]);
 
   if (!isLoading) {
     return (
@@ -31,7 +42,7 @@ const AdminDashboardLayout = ({ children }) => {
 
   return (
     <Layout hasSider>
-      <SideBar />
+      <SideBar avatar={avatar} />
 
       <Content
         style={{
@@ -39,7 +50,7 @@ const AdminDashboardLayout = ({ children }) => {
           color: "black",
         }}
       >
-        <AdminHeader />
+        <AdminHeader avatar={avatar} role={role} name={name} />
 
         <div
           style={{

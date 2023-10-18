@@ -32,6 +32,7 @@ import { decodedToken } from "@/utils/jwt";
 import { getFromLocalStorage } from "@/utils/local-storage";
 import { removeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import { userRole } from "@/constans/userRole";
 
 const Navigation = () => {
   const [cartOpen, setCartOpen] = useState(false);
@@ -41,7 +42,7 @@ const Navigation = () => {
   const token = getFromLocalStorage("accessToken");
   const tokenInfo = token ? decodedToken(token) : {};
 
-  const { email, role } = tokenInfo;
+  const { email, role, avatar } = tokenInfo;
 
   const logOutHandler = () => {
     removeUserInfo("accessToken");
@@ -157,7 +158,7 @@ const Navigation = () => {
         },
       ];
 
-  if (email && (role === "super_admin" || "admin")) {
+  if (email && (role === userRole.ADMIN || role === userRole.SUPER_ADMIN)) {
     items.unshift({
       key: "6",
       label: (
@@ -241,6 +242,7 @@ const Navigation = () => {
                   style={{ cursor: "pointer" }}
                   onClick={(e) => e.preventDefault()}
                   size="large"
+                  src={avatar}
                   icon={<UserOutlined />}
                 />
               </Dropdown>
