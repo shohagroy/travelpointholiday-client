@@ -86,9 +86,10 @@ const Checkout = ({ searchParams }) => {
         {contextHolder}
         <section className="max-w-7xl mx-auto my-10">
           <Row gutter={16}>
-            <Col span={12}>
-              <div className="">
+            <Col lg={12} sm={24}>
+              <div className="mx-auto">
                 <Card
+                  className="w-full"
                   title={
                     <div>
                       <small>{city?.name}</small>
@@ -98,7 +99,7 @@ const Checkout = ({ searchParams }) => {
                 >
                   <div>
                     <Flex>
-                      <div className="w-full h-[200px]">
+                      <div className="w-full lg:h-[200px]">
                         <Image
                           src={images[0]?.secure_url}
                           alt="image"
@@ -134,7 +135,7 @@ const Checkout = ({ searchParams }) => {
               </div>
             </Col>
 
-            <Col span={12}>
+            <Col lg={12} sm={24}>
               <div className="">
                 <Card
                   title={

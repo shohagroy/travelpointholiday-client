@@ -1,24 +1,10 @@
 import { Button, Flex } from "antd";
 import React from "react";
 
-const SortByFilds = ({ setFn, value }) => {
-  const sortedItems = [
-    {
-      title: "Our top Picks",
-      value: "",
-    },
-    {
-      title: "Price Highest to Lowest",
-      value: "desc",
-    },
-    {
-      title: "Price Lowest to Highest",
-      value: "asc",
-    },
-  ];
+const SortByFilds = ({ data, setFn, value }) => {
   return (
-    <Flex className="w-full bg-gray-100 rounded-3xl p-1">
-      {sortedItems?.map((item) => (
+    <Flex className="w-full bg-gray-100 rounded-3xl p-3">
+      {data?.map((item) => (
         <Button
           key={item?.title}
           onClick={() => setFn(item?.value)}

@@ -23,13 +23,17 @@ const SearchAttractions = () => {
           </h1>
 
           <p className="py-3 lg:py-6 lg:text-2xl">
-            Discover new attractions and experiences to match your <br />{" "}
+            Discover new attractions and experiences to <br /> match your
             interests and travel style
           </p>
         </div>
 
         <div className="absolute lg:-bottom-10 w-full left-0 px-4">
-          <Space direction="vertical" size="large" className=" px-5 w-full ">
+          <Space
+            direction="vertical"
+            size="large"
+            className=" hidden lg:block lg:px-5 w-full "
+          >
             <Space.Compact
               style={{
                 width: "100%",
@@ -54,6 +58,42 @@ const SearchAttractions = () => {
                   type="primary"
                   className="border-2 h-[80px] p-3 border-[#FFB601]"
                   size="large"
+                >
+                  Search
+                </Button>
+              </Link>
+            </Space.Compact>
+          </Space>
+
+          <Space
+            direction="vertical"
+            size="small"
+            className=" lg:hidden w-full "
+          >
+            <Space.Compact
+              style={{
+                width: "100%",
+              }}
+            >
+              <Input
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-white border-2  p-3 border-[#FFB601]"
+                prefix={
+                  <p className=" bg-white border-r">
+                    <SlackOutlined />
+                  </p>
+                }
+                value={search}
+                placeholder="Search Attractions... "
+              />
+
+              <Link href={`/attractions`}>
+                <Button
+                  onClick={() => setSearchQueryHandelar()}
+                  icon={<SearchOutlined />}
+                  type="primary"
+                  className="border-2 h-full border-[#FFB601]"
+                  size="small"
                 >
                   Search
                 </Button>

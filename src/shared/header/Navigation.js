@@ -182,7 +182,13 @@ const Navigation = () => {
       key: item.label,
       label: (
         <Link style={{ width: "100%", textAlign: "center" }} href={item.route}>
-          <Button type="link">{item.label}</Button>
+          <Button
+            onClick={() => setMenuOpen(false)}
+            className="text-gray-400  "
+            type="link"
+          >
+            {item.label}
+          </Button>
         </Link>
       ),
     };
@@ -241,36 +247,83 @@ const Navigation = () => {
       </div>
 
       <div className="block lg:hidden">
-        {menuOpen ? (
-          <Button
-            onClick={() => setMenuOpen(!menuOpen)}
-            type="primary"
-            danger
-            size="large"
-          >
-            <CloseOutlined />
-          </Button>
-        ) : (
-          <Button
-            onClick={() => setMenuOpen(!menuOpen)}
-            type="primary"
-            size="large"
-          >
-            <BarsOutlined />
-          </Button>
-        )}
+        <div className="flex justify-center items-center">
+          <div style={{ marginLeft: "20px" }}>
+            <Space wrap size={16}>
+              {email ? (
+                <div>
+                  <Badge count={cartData?.data?.length}>
+                    <Avatar
+                      className="cursor-pointer "
+                      onClick={() => setCartOpen(!cartOpen)}
+                      size={"small"}
+                      icon={<ShoppingCartOutlined />}
+                    />
+                  </Badge>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                trigger={["click"]}
+                placement="bottomRight"
+                arrow
+              >
+                <Avatar
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => e.preventDefault()}
+                  size="small"
+                  src={avatar}
+                  icon={<UserOutlined />}
+                />
+              </Dropdown>
+            </Space>
+          </div>
+
+          {menuOpen ? (
+            <Button
+              onClick={() => setMenuOpen(!menuOpen)}
+              type="primary"
+              danger
+              size="large"
+            >
+              <CloseOutlined />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setMenuOpen(!menuOpen)}
+              type="link"
+              size="large"
+              className="text-white"
+            >
+              <BarsOutlined />
+            </Button>
+          )}
+        </div>
       </div>
 
       <Drawer
+        className="bg-[#013A95]"
         title={
           <Flex justify="space-between" align="center">
             <Link href="/">
-              <Image src={Logo} alt="Logo" height={50} width={150} />
+              <Image
+                className="w-[100px] h-full"
+                src={Logo}
+                alt="Logo"
+                height={50}
+                width={150}
+                // layout="responsive"
+              />
             </Link>
 
             <Button
               onClick={() => setMenuOpen(!menuOpen)}
-              type="primary"
+              type="link"
               danger
               size="large"
             >
@@ -286,8 +339,9 @@ const Navigation = () => {
         getContainer={false}
       >
         <Menu
+          className="bg-[#013A95] text-white"
           mode="inline"
-          style={{ textAlign: "center" }}
+          style={{ textAlign: "center", borderTop: "1px solid white" }}
           items={smMenuItems}
         />
       </Drawer>

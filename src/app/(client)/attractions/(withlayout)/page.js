@@ -9,7 +9,7 @@ const Attractions = async () => {
       <Head>
         <title>Travel Point | Attractions</title>
       </Head>
-      <main className="">
+      <main className="w-full px-2 ">
         <AttractionView />
       </main>
     </>

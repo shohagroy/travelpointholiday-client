@@ -19,7 +19,14 @@ const Header = () => {
           align="center"
         >
           <Link href={"/"}>
-            <Image src={Logo} alt="Logo." height={50} width={200} />
+            <Image
+              className="w-[100px] h-full"
+              src={Logo}
+              alt="Logo."
+              height={100}
+              width={200}
+              // layout="responsive"
+            />
           </Link>
 
           <div>

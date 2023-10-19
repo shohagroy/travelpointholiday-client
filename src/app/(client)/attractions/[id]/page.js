@@ -65,7 +65,7 @@ const AttractionDetails = ({ params }) => {
           {/* details section  */}
           <div>
             <Row gutter={16}>
-              <Col span={16}>
+              <Col sm={24} lg={16}>
                 <div>
                   <Flex>
                     <p className="text-yellow-500 mr-2">
@@ -87,6 +87,7 @@ const AttractionDetails = ({ params }) => {
 
                 <div className="text-lg mt-4">
                   <p className="font-bold text-gray-500">{country?.name}</p>
+                  <TicketPriceSection data={data?.data} />
                   <div dangerouslySetInnerHTML={{ __html: description }} />
                 </div>
 
@@ -100,7 +101,7 @@ const AttractionDetails = ({ params }) => {
                 <LeaveFeedback id={attractionId} />
               </Col>
 
-              <Col span={8} className="relative">
+              <Col sm={24} lg={8} className="relative hidden lg:block">
                 <div className="sticky top-4 z-50">
                   <TicketPriceSection data={data?.data} />
                 </div>

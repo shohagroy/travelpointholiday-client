@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { Badge, Button, Card, Flex, Image, Space } from "antd";
+import { Badge, Button, Card, Space } from "antd";
 import {
   StarFilled,
   CalendarOutlined,
@@ -9,33 +7,31 @@ import {
   FieldTimeOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
+import Image from "next/image";
 
 const AttractionCard = ({ data }) => {
   const { id, banarTittle, images, price, tittle, duration, city } = data || {};
 
   return (
-    <Space
-      direction="vertical"
-      size="middle"
-      style={{
-        width: "100%",
-        margin: "10px 0",
-      }}
-    >
+    <div className="w-full my-3">
       <Badge.Ribbon text="Hippies" color="#003B95">
-        <Card className="shadow-sm hover:shadow-md duration-200">
-          <Flex>
-            <div className="w-[400px] h-[200px] bg-gray-200  rounded-md">
+        <Card className="shadow-sm hover:shadow-md duration-200 ">
+          <div className="  md:flex">
+            {" "}
+            {/* Use flex for medium and large screens */}
+            <div className="w-full md:w-1/2 p-2">
+              {" "}
+              {/* Full width for mobile and half width for medium and large */}
               <Image
-                preview={false}
+                width={100}
+                height={100}
+                layout="responsive"
                 src={images[0]?.secure_url}
                 alt="image"
-                className=" w-full h-[200px]  rounded-md"
-                style={{ objectFit: "fill" }}
+                className="w-full rounded-md"
               />
             </div>
-
-            <div className="w-full  pl-3">
+            <div className="w-full md:w-1/2 p-2">
               <p className="font-bold">{city?.name}</p>
               <Link href={`/attractions/${id}`}>
                 <h2 className="text-blue-600">{tittle}</h2>
@@ -46,27 +42,30 @@ const AttractionCard = ({ data }) => {
                 <p className="mr-2 text-gray-600">
                   <FieldTimeOutlined /> <span>Duration: {duration}</span>
                 </p>
-                <Flex justify="space-between" align="start">
+                <div className="md:flex justify-between items-start">
+                  {" "}
+                  {/* Use flex for medium and large screens */}
                   <div>
-                    <Flex>
+                    <div className="flex items-center">
                       <p className="text-yellow-500 mr-2">
                         <StarFilled />
                       </p>
                       <p>
                         <strong>4.4/5</strong> (1343 reviews)
                       </p>
-                    </Flex>
+                    </div>
 
                     <p className="mr-2 text-green-600">
                       <CalendarOutlined />{" "}
                       <span>Free cancellation available</span>
                     </p>
                   </div>
-                  <div>
-                    <p className="text-right py-1">
+                  <div className="md:text-right py-1">
+                    {" "}
+                    {/* Right align text for medium and large screens */}
+                    <p>
                       From <strong className="text-2xl">${price}</strong>
                     </p>
-
                     <Link href={`/attractions/${id}`}>
                       <Button
                         size="large"
@@ -77,13 +76,13 @@ const AttractionCard = ({ data }) => {
                       </Button>
                     </Link>
                   </div>
-                </Flex>
+                </div>
               </div>
             </div>
-          </Flex>
+          </div>
         </Card>
       </Badge.Ribbon>
-    </Space>
+    </div>
   );
 };
 

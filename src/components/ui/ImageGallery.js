@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Row, Col } from "antd";
 import Image from "next/image";
 import ImageGroupView from "./ImageGroupView";
+import Banar from "../Banar";
 
 const ImageGallery = ({ images = [] }) => {
   const [previewImages, setPreviewImages] = useState(false);
 
   return (
     <div>
-      <Row gutter={10}>
+      {/* <Row gutter={10}>
         <Col span={16}>
           <div
             style={{ position: "relative" }}
@@ -93,7 +94,9 @@ const ImageGallery = ({ images = [] }) => {
             </Col>
           </Row>
         </Col>
-      </Row>
+      </Row> */}
+
+      <Banar data={images} />
 
       {previewImages && (
         <ImageGroupView images={images} setFn={setPreviewImages} />
