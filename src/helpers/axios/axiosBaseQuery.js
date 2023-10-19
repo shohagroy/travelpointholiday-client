@@ -1,3 +1,4 @@
+import { setRefreshToken } from "@/utils/cooki-storate";
 import { instance } from "./axiosInstance";
 
 const axiosBaseQuery = ({ baseUrl = "" } = { baseUrl: "" }) => {
@@ -13,6 +14,10 @@ const axiosBaseQuery = ({ baseUrl = "" } = { baseUrl: "" }) => {
         },
         withCredentials: true,
       });
+
+      if (result?.data?.refreshToken) {
+        setRefreshToken(result?.data?.refreshToken);
+      }
 
       return { data: result };
     } catch (axiosError) {

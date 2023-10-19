@@ -5,7 +5,7 @@ import Subscribe from "@/components/Subscribe";
 import TopDestinations from "@/components/TopDestinations";
 import Head from "next/head";
 
-const Home = () => {
+const Home = ({ searchParams }) => {
   return (
     <>
       <Head>
@@ -14,7 +14,7 @@ const Home = () => {
       <main>
         {/* banar section  */}
         <section>
-          <Banar />
+          <Banar token={searchParams?.token} />
         </section>
 
         {/* search section  */}

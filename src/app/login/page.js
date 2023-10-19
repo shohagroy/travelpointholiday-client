@@ -8,21 +8,24 @@ import loginImage from "../../assets/login-image.png";
 import Image from "next/image";
 import Header from "@/shared/header/Header";
 import Link from "next/link";
-import {
-  GithubOutlined,
-  FacebookOutlined,
-  GoogleOutlined,
-} from "@ant-design/icons";
+import { GoogleOutlined } from "@ant-design/icons";
 import Form from "@/components/forms/From";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schemas/login";
 import { useRouter } from "next/navigation";
-import { useLoginMutation } from "@/redux/features/user/userApi";
+import {
+  useGetCallBackUrlQuery,
+  useLoginMutation,
+} from "@/redux/features/user/userApi";
 import { storeUserInfo } from "@/services/auth.service";
+import InitialLoading from "@/components/loader/InitialLoading";
 
 const LoginPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
+
+  const { data: callBackUrl, isLoading: initialLoading } =
+    useGetCallBackUrlQuery();
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -45,6 +48,15 @@ const LoginPage = () => {
       router.push(router.query?.callbackUrl || "/");
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <InitialLoading />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -122,21 +134,7 @@ const LoginPage = () => {
                   icon={<GoogleOutlined />}
                   className="w-full"
                 >
-                  Continue with Google
-                </Button>
-                <Button
-                  type="primary"
-                  icon={<FacebookOutlined />}
-                  className="w-full mt-2"
-                >
-                  Continue with Facebook
-                </Button>
-                <Button
-                  type="primary"
-                  icon={<GithubOutlined />}
-                  className="w-full mt-2 bg-gray-800"
-                >
-                  Continue with Github
+                  <a href={callBackUrl?.data}> Continue with Google</a>
                 </Button>
               </div>
             </Col>

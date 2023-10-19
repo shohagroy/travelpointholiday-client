@@ -12,7 +12,6 @@ const ReviewPage = () => {
   const userId = loginUser().id;
   const { data, isLoading } = useGetUserReviewsQuery({ id: userId });
 
-  console.log(data?.data);
   return (
     <>
       <Head>

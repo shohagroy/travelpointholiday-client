@@ -81,6 +81,15 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+
+    getCallBackUrl: build.query({
+      query: (data) => ({
+        url: "/auth/get-google-callback",
+        method: "GET",
+        data,
+      }),
+      providesTags: ["users"],
+    }),
   }),
 });
 
@@ -94,4 +103,5 @@ export const {
   useGetAllUserQuery,
   useChangeUserRoleMutation,
   useDeleteUserMutation,
+  useGetCallBackUrlQuery,
 } = userApi;

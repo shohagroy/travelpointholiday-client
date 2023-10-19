@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Badge,
@@ -15,7 +15,6 @@ import Link from "next/link";
 import {
   UserOutlined,
   ShoppingCartOutlined,
-  BellOutlined,
   CloseOutlined,
   BarsOutlined,
   PayCircleOutlined,
@@ -205,16 +204,20 @@ const Navigation = () => {
 
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
-              <div>
-                <Badge count={cartData?.data?.length}>
-                  <Avatar
-                    className="cursor-pointer mx-1"
-                    onClick={() => setCartOpen(!cartOpen)}
-                    size="large"
-                    icon={<ShoppingCartOutlined />}
-                  />
-                </Badge>
-              </div>
+              {email ? (
+                <div>
+                  <Badge count={cartData?.data?.length}>
+                    <Avatar
+                      className="cursor-pointer mx-1"
+                      onClick={() => setCartOpen(!cartOpen)}
+                      size="large"
+                      icon={<ShoppingCartOutlined />}
+                    />
+                  </Badge>
+                </div>
+              ) : (
+                ""
+              )}
 
               <Dropdown
                 menu={{
@@ -289,7 +292,15 @@ const Navigation = () => {
         />
       </Drawer>
 
-      <CartDrawer data={cartData?.data} open={cartOpen} setOpen={setCartOpen} />
+      {email ? (
+        <CartDrawer
+          data={cartData?.data}
+          open={cartOpen}
+          setOpen={setCartOpen}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

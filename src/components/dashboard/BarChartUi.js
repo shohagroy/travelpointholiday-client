@@ -21,8 +21,6 @@ const formatName = (name) => {
 };
 
 const BarChartUi = ({ data }) => {
-  console.log(data);
-
   const bookingData = data?.map((item) => {
     const name = formatName(item?.tittle); // Format the name
     const booking = item?.bookingSeat;

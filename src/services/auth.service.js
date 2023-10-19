@@ -1,6 +1,7 @@
 import { instance as axiosInstance } from "@/helpers/axios/axiosInstance";
 import { getBaseUrl } from "@/helpers/config/envConfig";
 import { decodedToken } from "@/utils/jwt";
+
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 
 export const storeUserInfo = ({ accessToken }) => {
@@ -27,10 +28,11 @@ export const removeUserInfo = (key) => {
 };
 
 export const getNewAccessToken = async () => {
-  return await axiosInstance({
-    url: `${getBaseUrl()}/auth/refresh-token`,
+  const response = await axiosInstance({
+    url: `${getBaseUrl()}/auth/v1/refresh-token`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    data: { refreshToken: getFromLocalStorage("refreshToken") },
     withCredentials: true,
   });
 };

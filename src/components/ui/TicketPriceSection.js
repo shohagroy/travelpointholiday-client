@@ -10,8 +10,12 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { useAddToCartMutation } from "@/redux/features/cart/cartApi";
+import { loginUser } from "@/utils/LoginUser";
+import { useRouter } from "next/navigation";
 
 const TicketPriceSection = ({ data }) => {
+  const { email } = loginUser();
+  const router = useRouter();
   const [ticketCount, setTicketCount] = useState(1);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -30,6 +34,10 @@ const TicketPriceSection = ({ data }) => {
   const [addToCart, { isLoading }] = useAddToCartMutation();
 
   const addToCartHandelar = async () => {
+    if (email) {
+      router.push("/login");
+    }
+
     const cartData = {
       attractionId: id,
       tittle,

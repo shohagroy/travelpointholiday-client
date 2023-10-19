@@ -1,73 +1,48 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Carousel } from "antd";
 
-import img1 from "../assets/1.jpg";
-import img2 from "../assets/2.jpg";
-import img3 from "../assets/3.jpg";
-import img4 from "../assets/4.jpg";
-import img5 from "../assets/5.jpg";
-import img6 from "../assets/6.jpg";
-import img7 from "../assets/7.jpg";
-import img8 from "../assets/8.jpg";
+import { useGetAllBanarsQuery } from "@/redux/features/banar/banarApi";
 import Image from "next/image";
+import { setToLocalStorage } from "@/utils/local-storage";
+import { useRouter } from "next/navigation";
 
-const Banar = () => {
-  const banarData = [
-    {
-      title: "Title 1",
-      content: "Content 1",
-      img: img1,
-    },
+const Banar = ({ token }) => {
+  const { data, isLoading } = useGetAllBanarsQuery();
+  const router = useRouter();
 
-    {
-      title: "Title 2",
-      content: "Content 2",
-      img: img2,
-    },
-    {
-      title: "Title 3",
-      content: "Content 3",
-      img: img3,
-    },
-    {
-      title: "Title 4",
-      content: "Content 4",
-      img: img4,
-    },
-    {
-      title: "Title 5",
-      content: "Content 5",
-      img: img5,
-    },
-    {
-      title: "Title 6",
-      content: "Content 6",
-      img: img6,
-    },
-    {
-      title: "Title 7",
-      content: "Content 7",
-      img: img7,
-    },
-    {
-      title: "Title 8",
-      content: "Content 8",
-      img: img8,
-    },
-  ];
+  useEffect(() => {
+    if (token) {
+      setToLocalStorage("accessToken", token);
+      router.push("/");
+    }
+  }, [token, router]);
+
   return (
     <Carousel autoplay={true}>
-      {banarData?.map((item, i) => (
-        <div key={i} className="relative h-full md:h-[500px] lg:h-[700px]">
-          <Image
-            src={item.img}
-            alt={item.title}
-            width={1000}
-            height={500}
-            layout="responsive"
-          />
+      {isLoading ? (
+        <div className="p-6">
+          <div className="animate-pulse ">
+            <div className="flex-1 py-2 space-y-3">
+              <div className=" h-[500px] w-full rounded bg-gray-300"></div>
+            </div>
+          </div>
         </div>
-      ))}
+      ) : (
+        data?.data?.map((item, i) => (
+          <div key={i} className="relative h-full md:h-[500px] lg:h-[700px]">
+            <Image
+              src={item?.secure_url}
+              className="w-full h-full object-cover"
+              alt={"banar"}
+              width={1000}
+              height={500}
+              layout="responsive"
+            />
+          </div>
+        ))
+      )}
+      {}
     </Carousel>
   );
 };
