@@ -67,9 +67,9 @@ const AboutUs = () => {
         />
 
         <section className="my-12">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 lg:px-0">
             <Row gutter={10}>
-              <Col span={12}>
+              <Col sm={24} lg={12}>
                 <div>
                   <h3 className="text-xl lg:text-3xl mb-2 font-semibold">
                     It started with a bang now we are here.
@@ -121,14 +121,16 @@ const AboutUs = () => {
                 </div>
               </Col>
 
-              <Col span={12}>
+              <Col sm={24} lg={12}>
                 <div
-                  className="relative bg-red-300 h-full w-full"
+                  className="relative h-full w-full"
                   style={{
                     backgroundImage: `url("https://hamart-shop.vercel.app/_next/static/media/faq-img.fe5fd98a.jpg")`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
+                    height: "100%",
+                    with: "100%",
                   }}
                 >
                   <div className="bg-black/40 h-full w-full">
@@ -140,6 +142,8 @@ const AboutUs = () => {
                   </div>
                 </div>
               </Col>
+
+              <Col sm={24} lg={12}></Col>
             </Row>
           </div>
         </section>
@@ -147,7 +151,7 @@ const AboutUs = () => {
         <div>
           <div className="p-3 lg:p-0">
             <div className="py-10">
-              <div className="grid grid-flow-row lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
+              <div className="grid grid-flow-row  lg:grid-cols-2 gap-4 lg:gap-16 items-center"></div>
             </div>
 
             {/* =====> */}
@@ -189,7 +193,7 @@ const AboutUs = () => {
                     One Team , Many Talents
                   </h3>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-6 xl:gap-x-8">
+                <div className="grid sm:grid-cols-1 gap-x-5 gap-y-8 lg:grid-cols-6 xl:gap-x-8">
                   {teamMembers.map((teamMember) => (
                     <TeamCard key={teamMember.name} data={teamMember} />
                   ))}

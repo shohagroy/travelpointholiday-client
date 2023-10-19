@@ -9,7 +9,7 @@ const ImageGallery = ({ images = [] }) => {
 
   return (
     <div>
-      {/* <Row gutter={10}>
+      <Row className="hidden lg:block" gutter={10}>
         <Col span={16}>
           <div
             style={{ position: "relative" }}
@@ -94,9 +94,11 @@ const ImageGallery = ({ images = [] }) => {
             </Col>
           </Row>
         </Col>
-      </Row> */}
+      </Row>
 
-      <Banar data={images} />
+      <div className="w-full lg:hidden">
+        <Banar data={images} />
+      </div>
 
       {previewImages && (
         <ImageGroupView images={images} setFn={setPreviewImages} />

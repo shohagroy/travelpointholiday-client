@@ -16,14 +16,15 @@ const BreadcrumbBanar = ({ breadItems = [], name, tittle }) => {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "400px",
+        // height: "400px",
         width: "100%",
       }}
+      className="h-[200px]  lg:h-[400px]"
     >
       <Flex className="bg-black/40 w-full h-full text-white justify-center items-center">
         <div className="flex flex-col items-center">
           <p>Travel Point | {name}</p>
-          <h2 className="text-5xl font-bold">{tittle}</h2>
+          <h2 className=" text-2xl lg:text-5xl font-bold">{tittle}</h2>
           <Breadcrumb
             className="bg-white px-6 py-1 mt-4 rounded-md"
             separator=">"
