@@ -16,6 +16,7 @@ import PieChartUi from "@/components/dashboard/PieChartUi";
 import { useGetAllAttractionsQuery } from "@/redux/features/attraction/attractionApi";
 import { useGetAllBookingListQuery } from "@/redux/features/booking/bookingApi";
 import Top10List from "@/components/dashboard/Top10List";
+import InitialLoading from "@/components/loader/InitialLoading";
 const onPanelChange = (value, mode) => {
   console.log(value.format("YYYY-MM-DD"), mode);
 };
@@ -41,37 +42,28 @@ const AdminDashboard = () => {
       };
     });
 
-  console.log(top5ListData);
-
-  // const top5ListData = attractionsData?.data
-  //   ?.sort((a, b) => {
-  //     return b?.bookingSeat - a?.bookingSeat;
-  //   })
-  //   .slice(0, 5)
-  //   .map((item) => {
-  //     return {
-  //       name: item?.tittle,
-  //       booking: item?.bookingSeat,
-  //     };
-  //   });
-
-  // console.log(top5ListData);
-
   const data = {
-    attractions: attractionsData?.data.length,
+    attractions: attractionsData?.data?.length,
     bookingList: bookingData?.data?.data?.filter(
       (item) => item?.status === "boocked"
-    ).length,
+    )?.length,
     cancelList: bookingData?.data?.data?.filter(
       (item) => item?.status === "cancel" && !item?.refundStatus
-    ).length,
+    )?.length,
 
     refundList: bookingData?.data?.data?.filter(
       (item) => item?.status === "cancel" && item?.refundStatus
-    ).length,
+    )?.length,
   };
 
-  console.log(data);
+  if (bookingLoading || attractionsLoading) {
+    return (
+      <div className="h-[60vh] flex items-center justify-center">
+        <InitialLoading />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>

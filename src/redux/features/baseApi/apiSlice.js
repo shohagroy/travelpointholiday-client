@@ -16,5 +16,6 @@ export const baseApi = createApi({
     "booking",
     "reviews",
     "carts",
+    "banars",
   ],
 });

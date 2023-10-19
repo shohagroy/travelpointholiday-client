@@ -11,12 +11,12 @@ const ImageGroupView = ({ images, setFn }) => {
     `}</style>
       <Image.PreviewGroup
         preview={{
-          visible: images.length,
+          visible: images?.length,
           onVisibleChange: () => setFn(false),
         }}
         className="custom-preview-group"
       >
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <Image
             loading="lazy"
             key={index}

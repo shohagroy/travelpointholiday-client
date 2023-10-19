@@ -56,9 +56,9 @@ const Banar = () => {
     },
   ];
   return (
-    <Carousel autoplay>
+    <Carousel autoplay={true}>
       {banarData?.map((item, i) => (
-        <div key={i} className="h-full md:h-[500px] lg:h-[700px] object-cover">
+        <div key={i} className="relative h-full md:h-[500px] lg:h-[700px]">
           <Image
             src={item.img}
             alt={item.title}
@@ -66,10 +66,6 @@ const Banar = () => {
             height={500}
             layout="responsive"
           />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4 bg-white rounded-lg shadow-lg">
-            <h1>{item.title}</h1>
-            <p>{item.content}</p>
-          </div>
         </div>
       ))}
     </Carousel>

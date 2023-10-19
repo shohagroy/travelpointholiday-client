@@ -76,7 +76,7 @@ const CreateAttractionPage = () => {
   const [createAttraction, { isLoading }] = useCreateAttractionMutation();
 
   useEffect(() => {
-    if (images.length > 0) {
+    if (images?.length > 0) {
       setImgPreview(true);
     } else {
       setImgPreview(false);

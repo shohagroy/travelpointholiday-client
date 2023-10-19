@@ -12,6 +12,7 @@ import FAQ from "@/components/ui/FAQ";
 import LeaveFeedback from "@/components/ui/LeaveFeedback";
 import { useGetAttractionQuery } from "@/redux/features/attraction/attractionApi";
 import TicketPriceSection from "@/components/ui/TicketPriceSection";
+import InitialLoading from "@/components/loader/InitialLoading";
 
 const AttractionDetails = ({ params }) => {
   const { id } = params;
@@ -35,6 +36,14 @@ const AttractionDetails = ({ params }) => {
       title: tittle,
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <InitialLoading />
+      </div>
+    );
+  }
 
   return (
     <>

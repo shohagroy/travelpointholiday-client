@@ -206,7 +206,7 @@ const Navigation = () => {
           <div style={{ marginLeft: "20px" }}>
             <Space wrap size={16}>
               <div>
-                <Badge count={cartData?.data.length}>
+                <Badge count={cartData?.data?.length}>
                   <Avatar
                     className="cursor-pointer mx-1"
                     onClick={() => setCartOpen(!cartOpen)}

@@ -2,6 +2,7 @@
 import FormInput from "@/components/forms/FormInput";
 import FormSelectField from "@/components/forms/FormSelectField";
 import Form from "@/components/forms/From";
+import InitialLoading from "@/components/loader/InitialLoading";
 import { useGetAttractionQuery } from "@/redux/features/attraction/attractionApi";
 import { useCreateBookingMutation } from "@/redux/features/booking/bookingApi";
 import { useGetUserProfileQuery } from "@/redux/features/user/userApi";
@@ -68,6 +69,14 @@ const Checkout = ({ searchParams }) => {
     }
   };
 
+  if (attractionLoading || profileLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <InitialLoading />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -90,14 +99,14 @@ const Checkout = ({ searchParams }) => {
                   <div>
                     <Flex>
                       <div className="w-full h-[200px]">
-                        {/* <Image
+                        <Image
                           src={images[0]?.secure_url}
                           alt="image"
                           height={100}
                           width={100}
                           layout="responsive"
                           className="w-full h-full object-cover"
-                        /> */}
+                        />
                       </div>
                     </Flex>
                     <p className="font-semibold my-1">{tittle}</p>
@@ -108,7 +117,7 @@ const Checkout = ({ searchParams }) => {
                   </Flex>
                   <Flex justify="space-between">
                     <p>Ticket Price:</p>
-                    <p className="font-bold">{price}</p>
+                    <p className="font-bold">${price}</p>
                   </Flex>
                   <Flex justify="space-between">
                     <p>Discount:</p>
@@ -118,7 +127,7 @@ const Checkout = ({ searchParams }) => {
                   <div className="mt-5 font-bold">
                     <Flex justify="space-between">
                       <p>Total Cost:</p>
-                      <p className="">0%</p>
+                      <p className="">${ticketCount * price}</p>
                     </Flex>
                   </div>
                 </Card>

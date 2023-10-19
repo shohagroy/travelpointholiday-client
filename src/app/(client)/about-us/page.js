@@ -9,6 +9,7 @@ import { Typography, Row, Col, Card, Button, Image } from "antd";
 import TeamCard from "@/components/ui/TeamCard";
 import ReviewCard from "@/components/ui/ReviewCard";
 import Subscribe from "@/components/Subscribe";
+import OurClientReviews from "@/components/ui/OurClientReviews";
 // import { AiFillPlayCircle } from "react-icons/ai";
 
 const { Title, Text } = Typography;
@@ -150,7 +151,7 @@ const AboutUs = () => {
             </div>
 
             {/* =====> */}
-            <div className="max-w-7xl mx-auto">
+            {/* <div className="max-w-7xl mx-auto">
               <div className="max-w-2xl">
                 <h3 className="text-xl lg:text-3xl mb-4 font-semibold">
                   Our Client Reviews
@@ -164,8 +165,13 @@ const AboutUs = () => {
                   </Col>
                 ))}
               </Row>
-            </div>
+            </div> */}
+            {/* <OurClientReviews /> */}
           </div>
+        </div>
+
+        <div className="my-10">
+          <Subscribe />
         </div>
 
         <section className="max-w-7xl mx-auto my-6">
@@ -192,8 +198,6 @@ const AboutUs = () => {
             </div>
           </div>
         </section>
-
-        <Subscribe />
       </main>
     </>
   );

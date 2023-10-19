@@ -99,6 +99,13 @@ const SideBar = () => {
       label: "Website Setting",
       key: "Website Setting",
       icon: <ToolFilled />,
+      children: [
+        {
+          label: <Link href={`/admin/ui/banar`}>Banar</Link>,
+          key: `/admin/ui/banar`,
+        },
+        ,
+      ],
     },
     {
       label: "Reports",

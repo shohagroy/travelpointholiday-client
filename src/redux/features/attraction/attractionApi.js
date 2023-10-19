@@ -30,7 +30,7 @@ export const attractionApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          if (result?.data?.data.length) {
+          if (result?.data?.data?.length) {
             return dispatch(storeAttractionData(result?.data?.data));
           }
         } catch (err) {
