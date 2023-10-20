@@ -229,33 +229,6 @@ const CartPage = () => {
                 // showPagination={true}
               />
             </div>
-
-            <div>
-              <Card title="Carts Total">
-                <Flex justify="space-between">
-                  <div>
-                    <p>Subtotal:</p>
-                  </div>
-                  <div>{1200}</div>
-                </Flex>
-                <Flex justify="space-between">
-                  <div>
-                    <p>Discount:</p>
-                  </div>
-                  <div>{1200}</div>
-                </Flex>
-                <Flex justify="space-between">
-                  <div>
-                    <p>Total:</p>
-                  </div>
-                  <div>{1200}</div>
-                </Flex>
-
-                <Button className="w-full" type="primary">
-                  Proceed to checkout
-                </Button>
-              </Card>
-            </div>
           </div>
         </section>
       </main>

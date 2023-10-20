@@ -1,4 +1,5 @@
 "use client";
+
 import FormInput from "@/components/forms/FormInput";
 import FormSelectField from "@/components/forms/FormSelectField";
 import Form from "@/components/forms/From";
@@ -8,6 +9,7 @@ import { useCreateBookingMutation } from "@/redux/features/booking/bookingApi";
 import { useGetUserProfileQuery } from "@/redux/features/user/userApi";
 import PrivateRouteHOC from "@/routes/PrivateRoute";
 import { profileSchema } from "@/schemas/profile";
+import { isLoggedIn } from "@/services/auth.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Col, Flex, Row, message } from "antd";
 import Head from "next/head";
@@ -19,6 +21,12 @@ const Checkout = ({ searchParams }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { attraction, ticketCount } = searchParams || {};
   const router = useRouter();
+
+  const userLoggedIn = isLoggedIn();
+
+  if (!userLoggedIn) {
+    router.push("/login");
+  }
 
   const { data: attractionData, isLoading: attractionLoading } =
     useGetAttractionQuery(attraction);
@@ -52,8 +60,8 @@ const Checkout = ({ searchParams }) => {
       attractionId: id,
       totalTicket: ticketCount,
     };
-
     const result = await createBooking(checkoutData).unwrap();
+
     if (result?.errorMessages) {
       messageApi.open({
         type: "error",
@@ -151,7 +159,6 @@ const Checkout = ({ searchParams }) => {
                       defaultValues={profileData?.data}
                     >
                       <FormInput
-                        disabled
                         label={"Full Name"}
                         name={"name"}
                         required
@@ -172,7 +179,6 @@ const Checkout = ({ searchParams }) => {
                       <Row gutter={16} className="mt-2">
                         <Col span={12}>
                           <FormInput
-                            disabled
                             name={"contact"}
                             label={"Contact Number"}
                             size="large"
@@ -194,7 +200,6 @@ const Checkout = ({ searchParams }) => {
 
                       <div className="mt-2">
                         <FormInput
-                          disabled
                           label={"Address"}
                           name={"address"}
                           size="large"
@@ -226,4 +231,4 @@ const Checkout = ({ searchParams }) => {
   );
 };
 
-export default PrivateRouteHOC(Checkout);
+export default Checkout;

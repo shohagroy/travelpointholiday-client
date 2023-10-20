@@ -88,7 +88,7 @@ TravelPoint includes a set of features designed specifically for admin users, en
 
 The project is deployed to Vercel and can be accessed using the following link:
 
-[Live Demo: travelpointholiday.vercel.app/](travelpointholiday.vercel.app/)
+[Live Demo: https:travelpointholiday.vercel.app/](https:travelpointholiday.vercel.app/)
 
 ## How to Run the Project
 

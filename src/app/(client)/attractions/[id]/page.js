@@ -87,7 +87,9 @@ const AttractionDetails = ({ params }) => {
 
                 <div className="text-lg mt-4">
                   <p className="font-bold text-gray-500">{country?.name}</p>
-                  <TicketPriceSection data={data?.data} />
+                  <div className="block lg:hidden">
+                    <TicketPriceSection data={data?.data} />
+                  </div>
                   <div dangerouslySetInnerHTML={{ __html: description }} />
                 </div>
 

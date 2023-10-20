@@ -1,13 +1,13 @@
 "use client";
 
-import InitialLoading from "@/components/loader/InitialLoading";
-import { isLoggedIn } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { isLoggedIn } from "@/services/auth.service";
+import InitialLoading from "@/components/loader/InitialLoading";
 
 const PrivateRouteHOC = (WrappedComponent) => {
   const PrivateRoute = (props) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Initialize as true
 
     const router = useRouter();
     const userLoggedIn = isLoggedIn();
@@ -15,11 +15,12 @@ const PrivateRouteHOC = (WrappedComponent) => {
     useEffect(() => {
       if (!userLoggedIn) {
         router.push("/login");
+      } else {
+        setIsLoading(false); // Set loading to false when user is logged in
       }
-      setIsLoading(true);
-    }, [router, isLoading, userLoggedIn]);
+    }, [router, userLoggedIn]);
 
-    if (!isLoading) {
+    if (isLoading) {
       return (
         <div
           style={{
@@ -32,11 +33,7 @@ const PrivateRouteHOC = (WrappedComponent) => {
       );
     }
 
-    return (
-      <>
-        <WrappedComponent {...props} />
-      </>
-    );
+    return <WrappedComponent {...props} />;
   };
 
   return PrivateRoute;

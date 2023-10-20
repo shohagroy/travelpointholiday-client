@@ -34,8 +34,8 @@ const TicketPriceSection = ({ data }) => {
   const [addToCart, { isLoading }] = useAddToCartMutation();
 
   const addToCartHandelar = async () => {
-    if (email) {
-      router.push("/login");
+    if (!email) {
+      return router.push("/login");
     }
 
     const cartData = {

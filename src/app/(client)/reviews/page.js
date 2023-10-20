@@ -1,16 +1,32 @@
 "use client";
 
+import InitialLoading from "@/components/loader/InitialLoading";
 import BreadcrumbBanar from "@/components/ui/BreadcrumbBanar";
 import ReviewCard from "@/components/ui/ReviewCard";
 import { useGetUserReviewsQuery } from "@/redux/features/review/reviewApi";
 import { loginUser } from "@/utils/LoginUser";
-import { Button, Card, Flex } from "antd";
 import Head from "next/head";
 import React from "react";
 
 const ReviewPage = () => {
   const userId = loginUser().id;
   const { data, isLoading } = useGetUserReviewsQuery({ id: userId });
+
+  if (isLoading) {
+    return (
+      <div className="h-[70vh] flex justify-center items-center">
+        <InitialLoading />
+      </div>
+    );
+  }
+
+  if (data?.data?.length) {
+    return (
+      <div className="h-[70vh] flex justify-center items-center">
+        <h3 className="text-red-600">No Review Found!</h3>
+      </div>
+    );
+  }
 
   return (
     <>

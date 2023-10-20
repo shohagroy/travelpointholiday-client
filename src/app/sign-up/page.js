@@ -82,7 +82,13 @@ const SignUpPage = () => {
             }}
           >
             <Col sm={12} md={16} lg={10}>
-              <Image src={loginImage} width={500} alt="login image" />
+              <Image
+                src={loginImage}
+                width={500}
+                height={500}
+                layout="responsive"
+                alt="login image"
+              />
             </Col>
             <Col sm={12} md={8} lg={8}>
               <h2>Wellcome to Travel Point!</h2>
