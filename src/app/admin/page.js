@@ -45,7 +45,7 @@ const AdminDashboard = () => {
   const data = {
     attractions: attractionsData?.data?.length,
     bookingList: bookingData?.data?.data?.filter(
-      (item) => item?.status === "boocked"
+      (item) => item?.status === "booked"
     )?.length,
     cancelList: bookingData?.data?.data?.filter(
       (item) => item?.status === "cancel" && !item?.refundStatus
