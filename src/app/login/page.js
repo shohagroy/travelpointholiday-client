@@ -95,6 +95,10 @@ const LoginPage = () => {
               <div>
                 <Form
                   submitHandler={onSubmit}
+                  defaultValues={{
+                    email: "admin@gmail.com",
+                    password: "123456",
+                  }}
                   resolver={yupResolver(loginSchema)}
                 >
                   <div>
@@ -134,12 +138,7 @@ const LoginPage = () => {
                 <Divider>
                   <small>or use one of these options</small>
                 </Divider>
-                <Button
-                  type="primary"
-                  danger
-                  icon={<GoogleOutlined />}
-                  className="w-full"
-                >
+                <Button danger icon={<GoogleOutlined />} className="w-full">
                   <a href={callBackUrl?.data}> Continue with Google</a>
                 </Button>
               </div>

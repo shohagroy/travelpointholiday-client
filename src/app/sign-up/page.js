@@ -155,21 +155,15 @@ const SignUpPage = () => {
                 <Divider>
                   <small>or use one of these options</small>
                 </Divider>
-                <Button
-                  type="primary"
-                  danger
-                  icon={<GoogleOutlined />}
-                  className="w-full"
-                >
+                <Button danger icon={<GoogleOutlined />} className="w-full">
                   <a href={callBackUrl?.data}>Continue with Google</a>
                 </Button>
               </div>
             </Col>
           </Row>
-
           <Divider />
 
-          <div className="text-center">
+          <div className="text-center p-2">
             <p>
               <small>
                 By signing in or creating an account, you agree with our{" "}
@@ -180,7 +174,7 @@ const SignUpPage = () => {
           </div>
           <Divider />
 
-          <div className="text-center">
+          <div className="text-center p-2">
             <p>
               <small>All rights reserved.</small>
             </p>
