@@ -1,15 +1,15 @@
 import AttractionView from "@/components/ui/AttractionView";
 
-import Head from "next/head";
 import React from "react";
+
+export const metadata = {
+  title: "Attractions | Travel Point",
+};
 
 const Attractions = async () => {
   return (
     <>
-      <Head>
-        <title>Travel Point | Attractions</title>
-      </Head>
-      <main className="w-full px-2 ">
+      <main className="">
         <AttractionView />
       </main>
     </>

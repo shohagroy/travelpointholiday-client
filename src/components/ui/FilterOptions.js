@@ -34,7 +34,7 @@ const FilterOptions = ({ setCategoryId, setCountryId, setCityId }) => {
           <Button type="link">Clear</Button>
         </Flex>
       }
-      className="shadow-md mt-4"
+      className="lg:shadow-md border-none mt-4"
     >
       <CheckBoxFilds
         onChange={filterHandelar}

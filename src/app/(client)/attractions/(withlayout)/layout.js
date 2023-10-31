@@ -12,6 +12,8 @@ import { useDebounced } from "@/redux/hooks/useDebounced";
 import AttractionLoader from "@/components/skeleton-loader/AttractionLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { storeAttractionData } from "@/redux/features/attraction/attractionSlice";
+import CardLoader from "@/components/skeleton-loader/CardLoader";
+import SmFilter from "@/components/ui/SmFilter";
 
 const AttractionLayout = ({ children }) => {
   const { search: attractionSearch } = useSelector((state) => state.attraction);
@@ -175,9 +177,33 @@ const AttractionLayout = ({ children }) => {
                     value={sortOrder}
                     setFn={setSortOrder}
                   />
+                  <SmFilter
+                    setCategoryId={setCategoryId}
+                    setCountryId={setCountryId}
+                    setCityId={setCityId}
+                  />
                 </div>
                 {isLoading ? (
-                  <AttractionLoader count={10} />
+                  <div>
+                    <div className="hidden lg:block">
+                      <AttractionLoader count={10} />
+                    </div>
+
+                    <div className="lg:hidden">
+                      {[...Array(6)].map((_, i) => (
+                        <Col
+                          key={i}
+                          className="my-3"
+                          xs={24}
+                          sm={12}
+                          md={8}
+                          lg={8}
+                        >
+                          <CardLoader />
+                        </Col>
+                      ))}
+                    </div>
+                  </div>
                 ) : data?.data?.length ? (
                   children
                 ) : (
