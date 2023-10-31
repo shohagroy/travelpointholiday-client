@@ -1,5 +1,4 @@
 import AttractionView from "@/components/ui/AttractionView";
-
 import React from "react";
 
 export const metadata = {

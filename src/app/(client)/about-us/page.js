@@ -1,18 +1,18 @@
-"use client";
-
 import BreadcrumbBanar from "@/components/ui/BreadcrumbBanar";
 import Head from "next/head";
 import React from "react";
 
 import { PlayCircleOutlined } from "@ant-design/icons";
-import { Typography, Row, Col, Card, Button, Image } from "antd";
+import { Row, Col } from "antd";
 import TeamCard from "@/components/ui/TeamCard";
-import ReviewCard from "@/components/ui/ReviewCard";
+// import ReviewCard from "@/components/ui/ReviewCard";
 import Subscribe from "@/components/Subscribe";
-import OurClientReviews from "@/components/ui/OurClientReviews";
-// import { AiFillPlayCircle } from "react-icons/ai";
 
-const { Title, Text } = Typography;
+// const { Title, Text } = Typography;
+
+export const metadata = {
+  title: "About Us | Travel Point",
+};
 
 const teamMembers = [
   {
