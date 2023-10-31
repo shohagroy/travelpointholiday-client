@@ -4,7 +4,6 @@ import FilterLoader from "../skeleton-loader/FilterLoader";
 
 const CheckBoxFilds = ({ lebel, onChange, data, loading, name }) => {
   const [selectedValue, setSelectedValue] = useState("");
-
   const checkHandelar = (info) => {
     const data = JSON.parse(info);
     onChange(data);

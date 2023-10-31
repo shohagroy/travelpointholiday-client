@@ -102,15 +102,17 @@ const CartDrawer = ({ open, setOpen, data }) => {
             </Flex>
           }
         >
-          <Link href={"/my-carts"}>
-            <Button
-              onClick={() => setOpen(false)}
-              className="w-full"
-              type="primary"
-            >
-              View Cart
-            </Button>
-          </Link>
+          <div className="hidden lg:block">
+            <Link href={"/my-carts"}>
+              <Button
+                onClick={() => setOpen(false)}
+                className="w-full"
+                type="primary"
+              >
+                View Cart
+              </Button>
+            </Link>
+          </div>
         </Card>
       }
       placement="right"

@@ -26,12 +26,19 @@ const FilterOptions = ({ setCategoryId, setCountryId, setCityId }) => {
 
   const { data: cityData, isLoading: cityLoading } = useGetAllCitiesDataQuery();
 
+  const cancelHandelar = () => {
+    setCategoryId("");
+    setCountryId("");
+    setCityId("");
+  };
   return (
     <Card
       title={
         <Flex justify="space-between" align="center">
           <p className="font-bold">Filter</p>
-          <Button type="link">Clear</Button>
+          <Button onClick={cancelHandelar} type="link">
+            Clear
+          </Button>
         </Flex>
       }
       className="lg:shadow-md border-none mt-4"
