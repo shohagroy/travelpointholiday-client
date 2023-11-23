@@ -20,9 +20,9 @@ const AttractionCard = ({ data }) => {
           <div className="w-full  md:w-1/2 md:p-2">
             {/* Full width for mobile and half width for medium and large */}
             <Image
-              width={100}
-              height={100}
-              layout="responsive"
+              width={200}
+              height={250}
+              // layout="responsive"
               src={images[0]?.secure_url}
               alt="image"
               className="w-full rounded-md"
